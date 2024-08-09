@@ -65,7 +65,7 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                     Authorization: `Bearer: ${token}`,
                 },
                 body: JSON.stringify({ 
-                    status: status === true ? "aproved" : "denied" 
+                    status: status === true ? "approved" : "denied" 
                 }),
             });
             const data = await response.json();
