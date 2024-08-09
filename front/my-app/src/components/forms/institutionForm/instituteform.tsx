@@ -6,6 +6,7 @@ import { FormDataInstitute, useFormInstitute } from "@/hooks/useFormInstitute";
 import { useRouter } from "next/navigation";
 import { registerInstitution, uploadLogoBanner } from "@/helpers/institution.helper";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { tokenStore } from "@/store/tokenStore";
 
 const InstituteRegisterForm: React.FC = () => {
   const initialState: FormDataInstitute = {
@@ -20,7 +21,7 @@ const InstituteRegisterForm: React.FC = () => {
   const router = useRouter();
   const { formData, errors, handleChange, validate } = useFormInstitute(initialState);
   const { user } = useUser();
-
+  const setToken = tokenStore((state) => state.setToken);
   console.log(formData)
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -31,9 +32,23 @@ const InstituteRegisterForm: React.FC = () => {
 
       console.log("hola")
       try {
-        const instituteId = await registerInstitution(formData);
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const data = await registerInstitution(formData);
+        const instituteId = data.institutionResponse.id;
+        const instituteEmail = data.institutionResponse.email
         await uploadLogoBanner(formData, instituteId);
-        
+        const response = await fetch(`${API_URL}/auth/signin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: instituteEmail,
+          }),
+        });
+        const dataToken = await response.json();
+        console.log(dataToken)
+        setToken(dataToken.token)
         alert(" Institución registrada correctamente")
         router.push("/verificacionInstitucion")
       } catch (error) {
