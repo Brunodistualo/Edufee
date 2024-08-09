@@ -47,7 +47,7 @@ export class InstitutionController {
     return this.institutionService.getNamesInstitutions();
   }
 
-  @Roles(Role.admin)
+  @Roles(Role.admin, Role.institution)
   @UseGuards(AuthGuard, RolesGuard)
   @ApiBearerAuth()
   @Get(':id')
