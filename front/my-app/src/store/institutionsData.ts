@@ -18,7 +18,7 @@ interface InstiData {
 
 interface InstitucionState {
     institutions: InstiData[];
-    institutionData: InstiData[];
+    institutionData: InstiData;
     getInstitutions: () => Promise<void>;
     updateInstitutionStatus: (id: string, status: boolean) => Promise<void>;
     getInstitutionData: () => Promise<void>;
@@ -27,7 +27,7 @@ interface InstitucionState {
 
 export const InstitutionsData = create<InstitucionState>((set) => ({
     institutions: [],
-    institutionData: [],
+    institutionData: {},
     async getInstitutions() {
         try {
             const store = localStorage.getItem("user");
@@ -92,7 +92,7 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer: ${payload}`,
+                    Authorization: `Bearer: ${token}`,
                 },
             });
             const data = await response.json();
