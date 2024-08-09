@@ -23,9 +23,8 @@ export const registerInstitution = async (formData: FormDataInstitute) => {
     if (!response.ok) {
       throw new Error('Error en el registro');
     }
-    const data = await response.json();
-    const institutionId = data.institutionResponse.id;
-    return institutionId;
+    return await response.json();
+
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -54,13 +53,13 @@ export const uploadLogoBanner = async (formDataInstitute: FormDataInstitute, ins
 
 export const getInstitutionsNames = async () => {
   try {
-    const response = await fetch(`${apiUrl}/institution`);
+    const response = await fetch(`${apiUrl}/institution/names`);
     if (!response.ok) {
       throw new Error('Error al obtener las instituciones');
     }
     const institutions = await response.json();
-    const institutionsNames = institutions.map((inst: { name: string }) => inst.name);
-    return institutionsNames;
+    const institutionNames = institutions.map((inst: {name: string}) => inst.name);
+    return institutionNames;
   } catch (error) {
     throw error;
   }

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { DataUser } from '@/store/userData';
 import { tokenStore } from '@/store/tokenStore';
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -29,6 +30,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setToken("");
+    Cookies.remove("authToken");
     router.push('/api/auth/logout');
   };
 

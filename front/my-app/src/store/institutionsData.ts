@@ -9,7 +9,7 @@ interface InstiData {
     banner?: string;
     email?: string;
     id?: string;
-    isActive?: boolean;
+    isActive?: string;
     logo?: string;
     name?: string;
     phone?: string;
@@ -64,7 +64,9 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                     "Content-Type": "application/json",
                     Authorization: `Bearer: ${token}`,
                 },
-                body: JSON.stringify({ status }),
+                body: JSON.stringify({ 
+                    status: status === true ? "aproved" : "denied" 
+                }),
             });
             const data = await response.json();
             if (response.ok) {
@@ -82,13 +84,15 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                 throw new Error("No hay token");
             }
             const dataToken = JSON.parse(store);
+            console.log(dataToken)
             const token = dataToken.state?.token;
             const payload = JSON.parse(atob(token.split(".")[1]));
-            console.log(payload.id);
+
             const response = await fetch(`${apiUrl}/institution/${payload.id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer: ${payload}`,
                 },
             });
             const data = await response.json();

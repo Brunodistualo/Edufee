@@ -1,7 +1,18 @@
-import Link from "next/link";
+'use client'
+
 import Image from "next/image";
+import { useEffect } from "react";
+import { InstitutionsData } from "@/store/institutionsData";
 
 const VerificationPage = () => {
+  const getInstitutionData = InstitutionsData((state) => state.getInstitutionData);
+  useEffect(() => {
+    const getInstituteData = async() => {
+      const institute = await getInstitutionData();
+      console.log("Data institution", institute)
+    }
+    getInstituteData();
+  },[])
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-300 via-blue-200 to-blue-300 flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm mx-auto text-center">
