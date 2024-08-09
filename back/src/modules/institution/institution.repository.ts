@@ -34,6 +34,16 @@ export class InstitutionRepository {
     return institutions;
   }
 
+  async getNamesInstitutions() {
+    const institutions = await this.institutionRepository.find({
+      select: ['name'],
+    });
+    if (!institutions)
+      throw new BadRequestException(`No hay instituciones creadas`);
+
+    return institutions;
+  }
+
   async getInstitutionById(id: string) {
     const institution = await this.institutionRepository.findOne({
       where: { id },
@@ -45,20 +55,36 @@ export class InstitutionRepository {
 
   async signUp(institution: Partial<Institution>) {
     if (!institution) throw new BadRequestException();
-    const { email } = institution;
-    const [existEmailInstitution, existEmailUser] = await Promise.all([
-      this.institutionRepository.findOneBy({
-        email,
-      }),
-      this.userRepository.findOneBy({ email }),
-    ]);
+    const { email, name } = institution;
+    const errors = [];
+    const [existEmailInstitution, existNameInstitution, existEmailUser] =
+      await Promise.all([
+        this.institutionRepository.findOneBy({
+          email,
+        }),
+        this.institutionRepository.findOneBy({
+          name,
+        }),
+        this.userRepository.findOneBy({ email }),
+      ]);
     if (existEmailInstitution) {
-      throw new ConflictException('Email de institución.');
+      errors.push({ field: 'Email' });
+    }
+    if (existNameInstitution) {
+      errors.push({ field: 'Name' });
     }
     if (existEmailUser) {
-      throw new ConflictException('Email de user.');
+      errors.push({ field: 'Email' });
     }
 
+    if (errors.length > 0) {
+      throw new ConflictException({
+        status: 'error',
+        code: 409,
+        message: 'Existen conflictos con los datos proporcionados',
+        errores: errors,
+      });
+    }
     const newInstitution = await this.institutionRepository.save(institution);
 
     const dbInstitution = await this.institutionRepository.findOneBy({
@@ -114,14 +140,14 @@ export class InstitutionRepository {
       }
 
       if (
-        status !== InstitutionRole.aproved &&
+        status !== InstitutionRole.approved &&
         status !== InstitutionRole.denied
       ) {
         throw new BadRequestException(`Status debe ser aproved o denied`);
       }
 
-      if (status === InstitutionRole.aproved) {
-        institution.isActive = InstitutionRole.aproved;
+      if (status === InstitutionRole.approved) {
+        institution.isActive = InstitutionRole.approved;
         await this.sendEmailRepository.sendApprovalEmail(institution);
       } else if (status === InstitutionRole.denied) {
         institution.isActive = InstitutionRole.denied;

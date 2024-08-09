@@ -17,7 +17,7 @@ export class AuthService {
 
   async findUserByEmail(emailUserDto: EmailUserDto) {
     const { email } = emailUserDto;
-    let user = await this.userRepository.findOneBy({ email });
+    const user = await this.userRepository.findOneBy({ email });
 
     if (user) {
       const payload = {
@@ -34,6 +34,7 @@ export class AuthService {
     if (institution) {
       const payload = {
         email: institution.email,
+        id: institution.id,
         roles: [institution.role],
       };
       const token = this.jwtService.sign(payload);

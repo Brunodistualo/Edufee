@@ -10,11 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InstitutionService } from './institution.service';
-import {
-  CreateInstitutionDto,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  EmailInstitutionDto,
-} from './institutionDtos/createInstitution.dto';
+import { CreateInstitutionDto } from './institutionDtos/createInstitution.dto';
 import { UpdateInstitutionDto } from './institutionDtos/updateInstitution.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -44,6 +40,11 @@ export class InstitutionController {
         Number(page),
         Number(limit),
       );
+  }
+
+  @Get('names')
+  getNamesInstitutions() {
+    return this.institutionService.getNamesInstitutions();
   }
 
   @Roles(Role.admin)
