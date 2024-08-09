@@ -13,7 +13,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { FilesInstitutionService } from './filesInstitution.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Files')
+@ApiTags('Files Institution')
 @Controller('files')
 export class FilesInstitutionController {
   constructor(private readonly fileUploadService: FilesInstitutionService) {}
