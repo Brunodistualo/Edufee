@@ -49,7 +49,7 @@ export class UsersRepository {
 
   async signUp(user: createUserDto) {
     const { email, dni, institutionName } = user;
-
+    const errors = [];
     const institution = await this.institutionRepository.findOneBy({
       name: institutionName,
     });
@@ -57,39 +57,46 @@ export class UsersRepository {
       throw new NotFoundException('Institución no encontrada. ');
     }
 
-    const existEmailInstitution = await this.institutionRepository.findOneBy({
-      email,
-    });
-    if (existEmailInstitution) {
-      throw new ConflictException();
-    }
-
-    const [existsEmail, existsDni] = await Promise.all([
+    const [existsEmail, existsDni, existEmailInstitution] = await Promise.all([
       this.usersRepository.findOneBy({
         email,
       }),
       this.usersRepository.findOneBy({
         dni,
       }),
+      this.institutionRepository.findOneBy({
+        email,
+      }),
     ]);
 
-    const handleConflictException = (field: string, value: any) => {
-      throw new ConflictException({
-        status: 'error',
-        code: 409,
-        message: `El ${field} ya existe en nuestra base de datos.`,
-        details: { field, value },
+    if (existEmailInstitution) {
+      errors.push({
+        fields: 'Email',
+        message: 'El email del estudiante ya existe en la base de datos.',
       });
-    };
+    }
 
     if (existsEmail) {
-      handleConflictException('email', email);
+      errors.push({
+        fields: 'Email',
+        message: 'El email del estudiante ya existe en la base de datos.',
+      });
     }
 
     if (existsDni) {
-      handleConflictException('dni', dni);
+      errors.push({
+        fields: 'Dni',
+        message: 'El Dni del estudiante ya existe en la base de datos.',
+      });
     }
-
+    if (errors.length > 0) {
+      throw new ConflictException({
+        status: 'error',
+        code: 409,
+        message: 'Existen conflictos con los datos proporcionados',
+        errores: errors,
+      });
+    }
     const usernew = this.usersRepository.create({ ...user, institution });
 
     const savedUser = await this.usersRepository.save(usernew);

@@ -57,6 +57,7 @@ export class InstitutionRepository {
     if (!institution) throw new BadRequestException();
     const { email, name } = institution;
     const errors = [];
+    //paralelismo
     const [existEmailInstitution, existNameInstitution, existEmailUser] =
       await Promise.all([
         this.institutionRepository.findOneBy({
@@ -68,13 +69,22 @@ export class InstitutionRepository {
         this.userRepository.findOneBy({ email }),
       ]);
     if (existEmailInstitution) {
-      errors.push({ field: 'Email' });
+      errors.push({
+        field: 'Email',
+        message: 'El email de la institucion ya existe en la base de datos.',
+      });
     }
     if (existNameInstitution) {
-      errors.push({ field: 'Name' });
+      errors.push({
+        field: 'Name',
+        message: 'El nombre de la institucion ya existe en la base de datos.',
+      });
     }
     if (existEmailUser) {
-      errors.push({ field: 'Email' });
+      errors.push({
+        field: 'Email',
+        message: 'El email de la institucion ya existe en la base de datos.',
+      });
     }
 
     if (errors.length > 0) {
