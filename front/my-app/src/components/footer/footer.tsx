@@ -3,7 +3,7 @@ import BotonLink from "../botonLink/boton";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="relative w-[100%] bg-[#C9EBFF] min-h-24   bottom-0 text-black  flex items-center justify-between p-0 overflow-hidden">
+    <footer className="w-[100%] bg-[#C9EBFF] min-h-24 text-black  flex items-center justify-between p-0 overflow-hidden">
       <div className="relative flex flex-row w-full h-full justify-between">
         <div className="//bg-red-800 flex flex-col p-4 min-w-[20px]">
           <p className="text-center font-bold text-auto font-sans">
