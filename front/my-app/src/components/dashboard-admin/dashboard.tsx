@@ -65,7 +65,7 @@ const InstitutionsTable = () => {
           {institutions.map((institution) => (
             <tr key={institution.id} className="text-center">
               <td className="px-4 py-2 border">{institution.name}</td>
-              <td className={`px-4 py-2 border ${institution.isActive === "aproved" ? "bg-green-200" : institution.isActive === "denied" ? "bg-red-200" : "bg-yellow-200"}`}>{institution.isActive === "aproved" ? "Aprobado" : institution.isActive === "denied" ? "Rechazado" : "Pendiente"}</td>
+              <td className={`px-4 py-2 border ${institution.isActive === "approved" ? "bg-green-200" : institution.isActive === "denied" ? "bg-red-200" : "bg-yellow-200"}`}>{institution.isActive === "approved" ? "Aprobado" : institution.isActive === "denied" ? "Rechazado" : "Pendiente"}</td>
               <td className="px-4 py-2 border">{institution.address}</td>
               <td className="px-4 py-2 border">{institution.name}</td>
             </tr>
