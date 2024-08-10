@@ -7,10 +7,11 @@ interface FormInputProps {
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  error: string;
+  error: string[] | string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({ type, name,label, placeholder, value, onChange, error }) => (
+  
   <div>
     <label htmlFor={name} className="block font-bold">{label}</label>
     <input
@@ -21,7 +22,8 @@ const FormInput: React.FC<FormInputProps> = ({ type, name,label, placeholder, va
       value={value}
       onChange={onChange}
     />
-    {error && <p className="text-red-500">{error}</p>}
+    {error && Array.isArray(error) && error.map((error) => <p key={error} className="text-red-700 font-bold">{error}</p>)}
+    {error && !Array.isArray(error)  && <p className="text-red-700 font-bold">{error}</p>}
   </div>
 );
 

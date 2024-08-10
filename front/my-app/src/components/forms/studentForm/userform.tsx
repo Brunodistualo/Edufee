@@ -1,19 +1,13 @@
 'use client'
 
 import FormInput from "@/components/FormInput";
-import { registerStudent } from "@/helpers/student.helper";
 import { FormDataStudent, useFormStudent } from "@/hooks/useFormStudent";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import FormSelect from "@/components/FormSelect";
-import { tokenStore } from "@/store/tokenStore";
 import { getInstitutionsNames } from "@/helpers/institution.helper";
 
 const StudentRegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const token = tokenStore((state) => state.token);
-  const SetToken = tokenStore((state) => state.setToken);
   const initialState: FormDataStudent = {
     nombre: "",
     apellido: "",
@@ -23,16 +17,13 @@ const StudentRegisterForm: React.FC = () => {
     telefono: "",
     institucion: ""
   };
-  const router = useRouter()
-  const { formData, errors, handleChange, handleFileChange,handleSubmitStudentImageProfile, validate, setFormData } = useFormStudent(initialState);
-  const { user } = useUser()
+  const { formData, errors, handleChange,handleSubmit, handleFileChange, setFormData } = useFormStudent(initialState);
   const [institutions, setInstitutions] = useState<string[]>([]);
 
-  console.log(formData)
 
   const fetchInstitutions = async() => {
     try {
-      const institutions = await getInstitutionsNames();
+      const institutions: string[] = await getInstitutionsNames();
       setInstitutions(institutions);
       setFormData((prevData) => ({
         ...prevData,
@@ -51,28 +42,6 @@ const StudentRegisterForm: React.FC = () => {
   if (isLoading) {
     return <div className="h-[90vh] text-lg">Loading student form...</div>;
   }
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    if (validate() && user) {
-
-      formData.email = user?.email!;
-
-      try {
-        const studentId = await registerStudent(formData);
-        await handleSubmitStudentImageProfile(studentId);
-        SetToken(studentId)
-        alert("Estudiante creado exitosamente")
-
-        router.push("/student/dashboard")
-      } catch (error) {
-        alert("Ocurrió un error al registrar el usuario")
-        console.log(error);
-      }
-
-    }
-  };
 
   return (
     <div className="h-screen flex flex-col items-center justify-center space-y-8">

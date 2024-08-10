@@ -38,8 +38,7 @@ const VerificationPage = () => {
           Tu cuenta está siendo verificada
         </h1>
         <p className="text-gray-600 mb-6">
-          Por favor permite tiempo a nuestro equipo para brindarte una
-          respuesta, gracias por tu tiempo.
+        Estamos verificando tu cuenta. Por favor, permite que nuestro equipo tome el tiempo necesario para brindarte una respuesta. Gracias por tu paciencia.
         </p>
         {/* <Link
           href="/contact-us"
