@@ -10,7 +10,7 @@ import { SendMailsModule } from './modules/send-mails/send-mails.module';
 import { FilesModule } from './modules/files/files.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
-import { ChatModule } from 'src/chat/chat.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
