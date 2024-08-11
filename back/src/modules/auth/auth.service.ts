@@ -36,6 +36,7 @@ export class AuthService {
         email: institution.email,
         id: institution.id,
         roles: [institution.role],
+        isActive: institution.isActive,
       };
       const token = this.jwtService.sign(payload);
       return { message: `${institution.role} logueado`, token };
