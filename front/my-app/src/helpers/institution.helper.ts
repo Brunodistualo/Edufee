@@ -21,7 +21,8 @@ export const registerInstitution = async (formData: FormDataInstitute) => {
     });
 
     if (!response.ok) {
-      throw new Error('Error en el registro');
+      const errorData = await response.json();
+      throw new Error(JSON.stringify(errorData));
     }
     return await response.json();
 
@@ -38,7 +39,7 @@ export const uploadLogoBanner = async (formDataInstitute: FormDataInstitute, ins
   if (formDataInstitute.banner) {
     formData.append('banner', formDataInstitute.banner);
   }
-
+  console.log(formData)
   try {
     const response = await fetch(`${apiUrl}/files/uploadInstitutionImages/${institutionId}`, {
       method: 'POST',

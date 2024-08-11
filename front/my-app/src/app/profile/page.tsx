@@ -62,6 +62,7 @@ export default function ProfileClient() {
               className="w-48 h-48 rounded-full"
             />
             <button
+              aria-label='Editar imagen de perfil'
               type="button"
               onClick={handleButtonClick}
               className="absolute -bottom-3 -right-1 bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition"
@@ -71,6 +72,7 @@ export default function ProfileClient() {
           </div>
           <input
             id="fileInput"
+            aria-label='Subir imagen de perfil'
             onChange={handleViewFile}
             name="file"
             accept=".jpg,.jpeg,.png,.gif,.webp,.avif"

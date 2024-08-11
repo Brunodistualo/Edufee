@@ -12,37 +12,42 @@ const LayerAuth = () => {
   const { user, isLoading, error } = useUser();
 
   useEffect(() => {
-    console.log(" user data: ", user);
-    if (user) {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const checkUser = async () => {
+    const checkUserAndRedirect = async () => {
+      if (user) {
+        const { email } = user;
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try {
           const response = await fetch(`${API_URL}/auth/signin`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-            }),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
           });
           const data = await response.json();
           if (response.ok) {
-            console.log(data);
-            const payload = JSON.parse(atob(data.token.split(".")[1]));
-            console.log(payload.roles);
-            setToken(data.token);
-            Cookies.set("authToken", data.token, {
+            const { token } = data;
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            const { roles, isActive } = payload;
+            setToken(token);
+            Cookies.set("authToken", token, {
               expires: 7,
               secure: true,
               sameSite: "strict",
             });
-            if (payload.roles.includes("student")) {
-              router.push("/student/dashboard");
-            } else if (payload.roles.includes("institution")) {
-              router.push("/institution/dashboard");
-            } else if (payload.roles.includes("admin")) {
-              router.push("/dashboard-admin");
+            const isStudent = roles.includes("student");
+            const isInstitutionApproved =
+              roles.includes("institution") && isActive === "approved";
+            const isInstitutionPending =
+              roles.includes("institution") && isActive === "pending";
+            const isAdmin = roles.includes("admin");
+            const routes = {
+              "/student/dashboard": isStudent,
+              "/institution/dashboard": isInstitutionApproved,
+              "/verificacionInstitucion": isInstitutionPending,
+              "/dashboard-admin": isAdmin,
+            };
+            const route = Object.entries(routes).find(([, condition]) => condition)?.[0];
+            if (route) {
+              router.push(route);
             } else {
               console.error("Error en la autenticación:", data.message);
             }
@@ -51,11 +56,12 @@ const LayerAuth = () => {
           console.error("Error verificando usuario:", error);
           router.push("/select");
         }
-      };
+      }
+    };
 
-      checkUser();
-    }
+    checkUserAndRedirect();
   }, [user, isLoading, error, router]);
+
   return (
     <div className="h-screen grid content-center ">
       <h2 className="text-xl text-center text-blue-700">Cargando...</h2>
@@ -63,4 +69,4 @@ const LayerAuth = () => {
   );
 };
 
-export default LayerAuth;
+ export default LayerAuth;
