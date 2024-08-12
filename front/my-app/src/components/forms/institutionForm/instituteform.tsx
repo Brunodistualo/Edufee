@@ -3,10 +3,6 @@
 import React from "react";
 import FormInput from "@/components/FormInput";
 import { FormDataInstitute, useFormInstitute } from "@/hooks/useFormInstitute";
-import { useRouter } from "next/navigation";
-import { registerInstitution, uploadLogoBanner } from "@/helpers/institution.helper";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { tokenStore } from "@/store/tokenStore";
 
 const InstituteRegisterForm: React.FC = () => {
   const initialState: FormDataInstitute = {
@@ -18,45 +14,7 @@ const InstituteRegisterForm: React.FC = () => {
     logo: null,
     banner: null,
   };
-  const router = useRouter();
-  const { formData, errors, handleChange, validate } = useFormInstitute(initialState);
-  const { user } = useUser();
-  const setToken = tokenStore((state) => state.setToken);
-  console.log(formData)
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (validate() && user) {
-      formData.email = user?.email!;
-      user.name = formData.nombreInstitucion;
-
-      console.log("hola")
-      try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const data = await registerInstitution(formData);
-        const instituteId = data.institutionResponse.id;
-        const instituteEmail = data.institutionResponse.email
-        await uploadLogoBanner(formData, instituteId);
-        const response = await fetch(`${API_URL}/auth/signin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: instituteEmail,
-          }),
-        });
-        const dataToken = await response.json();
-        console.log(dataToken)
-        setToken(dataToken.token)
-        alert(" Institución registrada correctamente")
-        router.push("/verificacionInstitucion")
-      } catch (error) {
-        alert("Ocurrio un error al registrar una institution")
-        console.log(error);
-      }
-    }
-  };
+  const { formData, errors, handleChange,handleSubmit, validate } = useFormInstitute(initialState);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center space-y-8">
@@ -70,7 +28,7 @@ const InstituteRegisterForm: React.FC = () => {
             placeholder="Harvard University"
             value={formData.nombreInstitucion}
             onChange={handleChange}
-            error={errors.nombreInstitucion}
+            error={errors.name}
           />
           <FormInput
             type="text"

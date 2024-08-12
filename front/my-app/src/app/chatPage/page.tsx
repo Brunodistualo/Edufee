@@ -1,90 +1,95 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import io from "socket.io-client";
+import { NextPage } from "next";
+import "tailwindcss/tailwind.css";
+import { DataUser } from "@/store/userData";
+import { InstitutionsData } from "@/store/institutionsData";
 
-const socket = io(
-  process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3005"
-);
+const socket = io("http://localhost:3005"); // Connect to the WebSocket server
 
-const Home = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+const ChatPage: NextPage = () => {
+  const userData = DataUser((state) => state.userData);
+  const getData = DataUser((state) => state.getDataUser);
+  const institutionsData = InstitutionsData((state) => state.institutionData);
+  const getInstitutions = InstitutionsData((state) => state.getInstitutionData);
+  const nombreCompleto = institutionsData.name || userData.name;
+  console.log(nombreCompleto);
+
   const [message, setMessage] = useState("");
-  const messageContainerRef = useRef<HTMLDivElement | null>(null);
+  const [messages, setMessages] = useState<{ name: string; message: string }[]>(
+    [],
+  );
 
   useEffect(() => {
-    const handleChatMessage = (data: { name: string; message: string }) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        `${data.name}: ${data.message}`,
-      ]);
-    };
+    // Emit the user’s full name when the component mounts
+    if (nombreCompleto) {
+      socket.emit("new-user", nombreCompleto);
+    }
 
-    const handleUserConnected = (name: string) => {
-      setMessages((prevMessages) => [...prevMessages, `${name} connected`]);
-    };
-
-    const handleUserDisconnected = (name: string) => {
-      setMessages((prevMessages) => [...prevMessages, `${name} disconnected`]);
-    };
-
-    socket.on("chat-message", handleChatMessage);
-    socket.on("user-connected", handleUserConnected);
-    socket.on("user-disconnected", handleUserDisconnected);
+    socket.on("chat-message", (data) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
+    });
 
     return () => {
-      socket.off("chat-message", handleChatMessage);
-      socket.off("user-connected", handleUserConnected);
-      socket.off("user-disconnected", handleUserDisconnected);
+      socket.off("chat-message");
     };
-  }, []);
+  }, [nombreCompleto]);
 
   useEffect(() => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop =
-        messageContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
+    getInstitutions();
+  }, [getInstitutions]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
     if (message.trim()) {
-      setMessages((prevMessages) => [...prevMessages, `You: ${message}`]);
-      socket.emit("send-chat-message", message);
+      if (nombreCompleto) {
+        socket.emit("send-chat-message", `:${message}`);
+      }
       setMessage("");
     }
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      <div
-        ref={messageContainerRef}
-        className="flex-1 overflow-y-auto p-4 bg-gray-200"
-      >
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`p-2 my-1 ${
-              index % 2 === 0 ? "bg-gray-300" : "bg-white"
-            }`}
-          >
-            {msg}
-          </div>
-        ))}
+    <div className="flex flex-col h-screen p-4 bg-gray-100">
+      <div className="flex-1 overflow-auto p-4 bg-white shadow-md rounded-md mt-24">
+        <div className="flex flex-col space-y-2 w-full">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`flex items-start p-2 rounded-md ${
+                msg.name === nombreCompleto
+                  ? "bg-green-200 w-max ml-auto"
+                  : "bg-pink-200 w-max mr-auto"
+              }`}
+            >
+              <span
+                className={`font-semibold ${
+                  msg.name === nombreCompleto
+                    ? "text-green-800"
+                    : "text-pink-800"
+                }`}
+              >
+                {msg.name}
+              </span>
+              <span className="ml-2">{msg.message}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <form
-        onSubmit={handleSubmit}
-        className="flex items-center p-4 bg-white border-t border-gray-300"
-      >
+      <form onSubmit={handleSubmit} className="mt-4 flex">
         <input
           type="text"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-grow p-2 border border-gray-300 rounded"
-          placeholder="Type a message"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setMessage(e.target.value)
+          }
+          className="flex-1 p-2 border border-gray-300 rounded-md"
+          placeholder="Type a message..."
         />
         <button
           type="submit"
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
           Send
         </button>
@@ -93,4 +98,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ChatPage;
