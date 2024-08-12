@@ -6,9 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Payment } from './payment.entity';
 import { User } from '../users/users.entity';
 import { Institution } from '../institution/institution.entity';
+import { InstitutionPayment } from './paymentInstitutions/paymentInstitutions.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, User, Institution])],
+  imports: [
+    TypeOrmModule.forFeature([Payment, User, Institution, InstitutionPayment]),
+  ],
   controllers: [PaymentDetailController],
   providers: [PaymentService, PaymentsRepository],
 })

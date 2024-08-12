@@ -2,8 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { User } from '../users/users.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Payment } from '../payment/payment.entity';
+
 import { Role } from 'src/enums/enums';
 import { InstitutionRole } from 'src/enums/institution.enum';
+import { InstitutionPayment } from '../payment/paymentInstitutions/paymentInstitutions.entity';
 
 @Entity('institutions')
 export class Institution {
@@ -74,6 +76,14 @@ export class Institution {
   role: Role;
 
   @ApiProperty({
+    description: 'Total que debe pagar la institución',
+  })
+  @Column({
+    default: 0,
+  })
+  mustPay: number;
+
+  @ApiProperty({
     description: 'Toda institución deberá esperar que su cuenta sea aprobada',
   })
   @Column({ default: 'pending' })
@@ -84,4 +94,10 @@ export class Institution {
 
   @OneToMany(() => Payment, (payment) => payment.institution)
   payments: Payment[];
+
+  @OneToMany(
+    () => InstitutionPayment,
+    (institutionPayment) => institutionPayment.institution,
+  )
+  institutionPayments: InstitutionPayment[];
 }

@@ -17,4 +17,7 @@ export class PaymentService {
   registerPayment(paymentDto: PaymentDto) {
     return this.paymentRepository.registerPayment(paymentDto);
   }
+  generateMonthlyPaymentOrder(institutionId: string) {
+    return this.paymentRepository.generateMonthlyPaymentOrder(institutionId);
+  }
 }
