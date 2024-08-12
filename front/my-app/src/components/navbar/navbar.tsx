@@ -57,9 +57,18 @@ const Navbar = () => {
 
   if (isLoading) {
     return (
-      <div className="h-16 bg-white w-full fixed z-50 flex items-center justify-center">
-        <p></p>
+      <div className="h-16 bg-white w-full fixed z-50 flex items-center justify-between px-40">
+        <div className="animate-pulse flex items-center justify-between space-x-4 w-full">
+          <div className="h-8 w-24 bg-gray-200 rounded"></div>
+          <div className="flex items-center gap-8">
+            <div className="ml-2 w-20 h-3 bg-gray-200 rounded"></div>
+            <div className="ml-2 w-20 h-3 bg-gray-200 rounded"></div>
+            <div className="ml-2 w-20 h-3 bg-gray-200 rounded"></div>
+            <div className="ml-2 w-20 h-3 bg-gray-200 rounded"></div>
+          </div>
+        </div>
       </div>
+
     );
   }
 

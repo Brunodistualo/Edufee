@@ -4,12 +4,18 @@ import io from "socket.io-client";
 import { NextPage } from "next";
 import "tailwindcss/tailwind.css";
 import { DataUser } from "@/store/userData";
+import { InstitutionsData } from "@/store/institutionsData";
 
 const socket = io("http://localhost:3005");
 
 const ChatPage: NextPage = () => {
   const userData = DataUser((state) => state.userData);
-  const nombreCompleto = `${userData.name} ${userData.lastname}`;
+  const getData = DataUser((state) => state.getDataUser);
+  const institutionsData = InstitutionsData((state) => state.institutionData);
+  const getInstitutions = InstitutionsData((state) => state.getInstitutionData);
+  const nombreCompleto = institutionsData.name || userData.name;
+  console.log(nombreCompleto);
+
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<{ name: string; message: string }[]>(
     []
@@ -31,11 +37,13 @@ const ChatPage: NextPage = () => {
   }, [nombreCompleto]);
 
   useEffect(() => {
+    getInstitutions();
+  }, [getInstitutions]);
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (message.trim()) {

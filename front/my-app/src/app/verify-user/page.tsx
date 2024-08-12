@@ -57,6 +57,9 @@ const LayerAuth = () => {
           router.push("/select");
         }
       }
+      else {
+        router.push("/api/auth/login")
+      }
     };
 
     checkUserAndRedirect();
