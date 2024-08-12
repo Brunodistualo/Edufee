@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { PaymentDto } from './payment.dto';
 import { User } from '../users/users.entity';
 import { Institution } from '../institution/institution.entity';
+import { InstitutionPayment } from './paymentInstitutions/paymentInstitutions.entity';
 
 @Injectable()
 export class PaymentsRepository {
@@ -19,6 +20,8 @@ export class PaymentsRepository {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Institution)
     private readonly institutionRepository: Repository<Institution>,
+    @InjectRepository(InstitutionPayment)
+    private readonly institutionPaymentRepository: Repository<InstitutionPayment>, // Repositorio para InstitutionPayment
   ) {}
 
   async getAllPayments(page: number, limit: number) {
@@ -57,6 +60,7 @@ export class PaymentsRepository {
     }
 
     const newPayment = new Payment();
+    const fee = amount * 0.01;
 
     newPayment.date = new Date().toLocaleDateString();
     newPayment.amount = amount;
@@ -64,6 +68,38 @@ export class PaymentsRepository {
     newPayment.user = user;
     newPayment.institution = institution;
 
+    institution.mustPay += fee;
+
+    await this.institutionRepository.save(institution);
+
     return await this.paymentRepository.save(newPayment);
+  }
+
+  async generateMonthlyPaymentOrder(
+    institutionId: string,
+  ): Promise<InstitutionPayment> {
+    const institution = await this.institutionRepository.findOneBy({
+      id: institutionId,
+    });
+
+    if (!institution) {
+      throw new BadRequestException(
+        `No existe una institución con este ID: ${institutionId}`,
+      );
+    }
+
+    const amountDue = institution.mustPay;
+
+    const institutionPayment = new InstitutionPayment();
+    institutionPayment.date = new Date().toLocaleDateString();
+    institutionPayment.amount = amountDue;
+    institutionPayment.institution = institution;
+
+    await this.institutionPaymentRepository.save(institutionPayment);
+
+    institution.mustPay = 0;
+    await this.institutionRepository.save(institution);
+
+    return institutionPayment;
   }
 }

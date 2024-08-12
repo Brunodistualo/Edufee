@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
@@ -15,6 +16,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/enums/enums';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { InstitutionPayment } from './paymentInstitutions/paymentInstitutions.entity';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -49,5 +51,17 @@ export class PaymentDetailController {
   @Post('register')
   async registerPayment(@Body() paymentDto: PaymentDto) {
     return this.paymentService.registerPayment(paymentDto);
+  }
+  @Post('register/institution/:institutionId')
+  async generateMonthlyPaymentOrder(
+    @Param('institutionId', ParseUUIDPipe) institutionId: string,
+  ): Promise<InstitutionPayment> {
+    try {
+      return await this.paymentService.generateMonthlyPaymentOrder(
+        institutionId,
+      );
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }
