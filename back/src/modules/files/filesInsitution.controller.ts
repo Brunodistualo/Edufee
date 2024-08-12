@@ -34,7 +34,6 @@ export class FilesInstitutionController {
     const logoFile = files.logo?.[0];
     const bannerFile = files.banner?.[0];
 
-    // Validar archivos
     const parseFilePipe = new ParseFilePipe({
       validators: [
         new MaxFileSizeValidator({
@@ -58,7 +57,6 @@ export class FilesInstitutionController {
       throw new BadRequestException(error.message);
     }
 
-    // Verificar que al menos uno de los archivos esté presente
     if (!logoFile && !bannerFile) {
       throw new BadRequestException(
         'Debes proporcionar al menos un archivo de logo o banner.',
