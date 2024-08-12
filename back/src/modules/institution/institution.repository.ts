@@ -57,7 +57,7 @@ export class InstitutionRepository {
     if (!institution) throw new BadRequestException();
     const { email, name } = institution;
     const errors = [];
-    //paralelismo
+
     const [existEmailInstitution, existNameInstitution, existEmailUser] =
       await Promise.all([
         this.institutionRepository.findOneBy({

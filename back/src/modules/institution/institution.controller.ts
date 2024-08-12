@@ -86,7 +86,6 @@ export class InstitutionController {
   async toRoleAdmin(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<Institution> {
-    console.log('Controller: toRoleAdmin called with id:', id);
     return this.institutionService.toRoleAdmin(id);
   }
 }

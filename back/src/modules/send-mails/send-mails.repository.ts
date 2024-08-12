@@ -9,9 +9,9 @@ export class SendMailsRepository {
 
   async sendEmail(user: SendEmailDto): Promise<void> {
     await transporter.sendMail({
-      from: '"Edufee" <paymyacademic@gmail.com>', // Cambia el remitente
-      to: user.email, // Lista de receptores
-      subject: '¡Bienvenido a Edufee!', // Asunto del correo
+      from: '"Edufee" <paymyacademic@gmail.com>',
+      to: user.email,
+      subject: '¡Bienvenido a Edufee!',
       html: `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
         <h2 style="color: #FFA500;">¡Gracias por registrarte, <span style="color: #FFD700;">${user.name}</span>!</h2>
@@ -25,7 +25,6 @@ export class SendMailsRepository {
   }
 
   async sendReviewEmail(user: any): Promise<void> {
-    // Enviar correo al usuario informándole que su cuenta está en revisión
     await transporter.sendMail({
       from: '"Edufee" <paymyacademic@gmail.com>',
       to: user.email,
@@ -41,10 +40,9 @@ export class SendMailsRepository {
       `,
     });
 
-    // Enviar correo a tu dirección para informarte sobre la revisión
     await transporter.sendMail({
       from: '"Edufee" <paymyacademic@gmail.com>',
-      to: 'paymyacademic@gmail.com', // Tu correo
+      to: 'paymyacademic@gmail.com',
       subject: 'Evaluación de cuenta requerida',
       html: `
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
@@ -98,11 +96,10 @@ export class SendMailsRepository {
   }
 
   async sendContactEmail(user: ContactEmailDto): Promise<void> {
-    // Enviar correo de agradecimiento al usuario
     await transporter.sendMail({
-      from: '"Edufee" <paymyacademic@gmail.com>', // Cambia el remitente
-      to: user.email, // Lista de receptores
-      subject: '¡Gracias por contactarnos!', // Asunto del correo
+      from: '"Edufee" <paymyacademic@gmail.com>',
+      to: user.email,
+      subject: '¡Gracias por contactarnos!',
       html: `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
         <h2 style="color: #FFA500;">¡Gracias por contactarnos, <span style="color: #FFD700;">${user.name}</span>!</h2>
@@ -114,11 +111,10 @@ export class SendMailsRepository {
       `,
     });
 
-    // Enviar correo a tu dirección informando sobre el nuevo mensaje de contacto
     await transporter.sendMail({
-      from: '"Edufee" <paymyacademic@gmail.com>', // Cambia el remitente
-      to: 'paymyacademic@gmail.com', // Asegúrate de que aquí esté tu correo
-      subject: 'Nuevo mensaje de contacto', // Asunto del correo
+      from: '"Edufee" <paymyacademic@gmail.com>',
+      to: 'paymyacademic@gmail.com',
+      subject: 'Nuevo mensaje de contacto',
       html: `
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
         <h2 style="color: #FFA500;">Nuevo mensaje de contacto de <span style="color: #FFD700;">${user.name}</span></h2>

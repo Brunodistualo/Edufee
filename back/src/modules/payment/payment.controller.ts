@@ -42,12 +42,6 @@ export class PaymentDetailController {
     return this.paymentService.getAllPayments(Number(page), Number(limit));
   }
 
-  // @Post()
-  // handleTest(@Body() body: any) {
-  //   console.log('Received data:', body); // Aquí se imprime cualquier dato recibido
-  //   return { status: 'success', data: body }; // Devuelve los datos recibidos como respuesta
-  // }
-
   @Post('register')
   async registerPayment(@Body() paymentDto: PaymentDto) {
     return this.paymentService.registerPayment(paymentDto);

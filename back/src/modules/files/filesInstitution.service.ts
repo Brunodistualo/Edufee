@@ -17,7 +17,6 @@ export class FilesInstitutionService {
     bannerFile: Express.Multer.File,
     institutionId: string,
   ) {
-    // Verificar que exista la institución
     const institution = await this.institutionRepository.findOneBy({
       id: institutionId,
     });
@@ -25,7 +24,6 @@ export class FilesInstitutionService {
       throw new NotFoundException('Institución no encontrada');
     }
 
-    // Subir el logo
     const logoResponse = logoFile
       ? await this.filesRepository.uploadImage(logoFile)
       : null;
@@ -33,7 +31,6 @@ export class FilesInstitutionService {
       throw new NotFoundException('Error al subir el logo en Cloudinary');
     }
 
-    // Subir el banner
     const bannerResponse = bannerFile
       ? await this.filesRepository.uploadImage(bannerFile)
       : null;
@@ -41,7 +38,6 @@ export class FilesInstitutionService {
       throw new NotFoundException('Error al subir el banner en Cloudinary');
     }
 
-    // Actualizar la imagen del logo y banner de la institución
     try {
       await this.institutionRepository.update(institutionId, {
         logo: logoResponse?.secure_url,

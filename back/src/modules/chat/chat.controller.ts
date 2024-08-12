@@ -7,7 +7,6 @@ export class ChatController {
 
   @Get('users')
   getUsers() {
-    // Retorna los usuarios conectados
     return this.chatGateway.getUsers();
   }
 }
