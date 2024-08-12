@@ -1,23 +1,22 @@
 "use client";
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent, useRef } from "react";
 import io from "socket.io-client";
 import { NextPage } from "next";
 import "tailwindcss/tailwind.css";
 import { DataUser } from "@/store/userData";
 
-const socket = io("http://localhost:3005"); // Connect to the WebSocket server
+const socket = io("http://localhost:3005");
 
 const ChatPage: NextPage = () => {
   const userData = DataUser((state) => state.userData);
-  const getData = DataUser((state) => state.getDataUser);
   const nombreCompleto = `${userData.name} ${userData.lastname}`;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<{ name: string; message: string }[]>(
     []
   );
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Emit the user’s full name when the component mounts
     if (nombreCompleto) {
       socket.emit("new-user", nombreCompleto);
     }
@@ -31,58 +30,67 @@ const ChatPage: NextPage = () => {
     };
   }, [nombreCompleto]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (message.trim()) {
       if (nombreCompleto) {
-        socket.emit("send-chat-message", `:${message}`);
+        socket.emit("send-chat-message", `${message}`);
       }
       setMessage("");
     }
   };
 
   return (
-    <div className="flex flex-col h-screen p-4 bg-gray-100">
-      <div className="flex-1 overflow-auto p-4 bg-white shadow-md rounded-md mt-24">
+    <div className="flex flex-col h-screen p-4 bg-gradient-to-tr from-blue-500 to-green-500 pb-10 items-center">
+      <div
+        ref={scrollRef}
+        className="flex-1 w-full  p-4 bg-gray-100/25 shadow-md rounded-2xl mt-24 max-w-[800px] overflow-hidden"
+      >
         <div className="flex flex-col space-y-2 w-full">
           {messages.map((msg, index) => (
             <div
               key={index}
               className={`flex items-start p-2 rounded-md ${
                 msg.name === nombreCompleto
-                  ? "bg-green-200 w-max ml-auto"
-                  : "bg-pink-200 w-max mr-auto"
+                  ? "bg-green-100 w-max ml-auto"
+                  : "bg-blue-100 w-max mr-auto"
               }`}
             >
               <span
                 className={`font-semibold ${
                   msg.name === nombreCompleto
-                    ? "text-green-800"
-                    : "text-pink-800"
+                    ? "text-green-600"
+                    : "text-blue-600"
                 }`}
               >
-                {msg.name}
+                {msg.name}:
               </span>
-              <span className="ml-2">{msg.message}</span>
+              <span className="ml-1 text-gray-700">{msg.message}</span>
             </div>
           ))}
         </div>
       </div>
-      <form onSubmit={handleSubmit} className="mt-4 flex">
+      <form onSubmit={handleSubmit} className="mt-4 flex w-full max-w-[800px]">
         <input
           type="text"
           value={message}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setMessage(e.target.value)
           }
-          className="flex-1 p-2 border border-gray-300 rounded-md"
-          placeholder="Type a message..."
+          className="flex-1 p-2 border bg-gray-200/75 border-gray-300 rounded-md text-gray-600 placeholder-gray-500"
+          placeholder="Escribe tu mensaje..."
         />
         <button
           type="submit"
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
         >
-          Send
+          Enviar
         </button>
       </form>
     </div>
