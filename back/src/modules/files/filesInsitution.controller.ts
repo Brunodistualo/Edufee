@@ -38,8 +38,8 @@ export class FilesInstitutionController {
     const parseFilePipe = new ParseFilePipe({
       validators: [
         new MaxFileSizeValidator({
-          maxSize: 200000,
-          message: 'Supera el máximo permitido: 200kb',
+          maxSize: 2000000,
+          message: 'Supera el máximo permitido:  2 MB',
         }),
         new FileTypeValidator({
           fileType: /(.jpg|.png|.jpeg|.webp)/,
