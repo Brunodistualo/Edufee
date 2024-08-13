@@ -17,23 +17,25 @@ function CheckoutContent() {
   const nombreCompleto = `${userData.name} ${userData.lastname}`;
   const searchParams = useSearchParams();
   const router = useRouter();
-  const amountParam = searchParams.get("amount");
-  const referenceParam = searchParams.get("reference");
   const [amount, setAmount] = useState<number>(1);
   const [reference, setReference] = useState<string>("");
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   useEffect(() => {
-    if (amountParam) {
-      const parsedAmount = parseFloat(amountParam);
-      if (!isNaN(parsedAmount)) {
-        setAmount(parsedAmount);
+    if (searchParams) {
+      const amountParam = searchParams.get("amount");
+      const referenceParam = searchParams.get("reference");
+      if (amountParam) {
+        const parsedAmount = parseFloat(amountParam);
+        if (!isNaN(parsedAmount)) {
+          setAmount(parsedAmount);
+        }
+      }
+      if (referenceParam) {
+        setReference(referenceParam);
       }
     }
-    if (referenceParam) {
-      setReference(referenceParam);
-    }
-  }, [amountParam, referenceParam]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (amount) {

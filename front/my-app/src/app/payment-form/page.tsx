@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { DataUser } from "../../store/userData";
 
@@ -22,8 +22,8 @@ export default function FormPage() {
     return `${timestamp}-${randomValue}`;
   };
 
-  // Set a unique reference number when the form is loaded
-  useState(() => {
+  // Set a unique reference number when the component mounts
+  useEffect(() => {
     setReference(generateUniqueReference());
   }, []);
 

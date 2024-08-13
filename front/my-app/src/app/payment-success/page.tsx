@@ -24,8 +24,8 @@ function LoadingFallback() {
 function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const amount = searchParams.get("amount") || "0";
-  const reference = searchParams.get("reference") || "";
+  const amount = searchParams?.get("amount") || "0";
+  const reference = searchParams?.get("reference") || "";
   const userData = DataUser((state) => state.userData);
   const token = tokenStore((state) => state.token);
   const [loading, setLoading] = useState(false);
