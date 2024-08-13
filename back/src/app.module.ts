@@ -27,7 +27,7 @@ import { ChatModule } from './modules/chat/chat.module';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+      signOptions: { expiresIn: '10h' },
     }),
     AuthModule,
     ChatModule,
