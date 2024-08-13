@@ -20,4 +20,7 @@ export class PaymentService {
   generateMonthlyPaymentOrder(institutionId: string) {
     return this.paymentRepository.generateMonthlyPaymentOrder(institutionId);
   }
+  getPaymentsByStudent(studentId: string, page: number, limit: number) {
+    return this.paymentRepository.getPaymentsByStudent(studentId, page, limit);
+  }
 }

@@ -97,6 +97,6 @@ export class User {
   @ManyToOne(() => Institution, (institution) => institution.user_id)
   institution: Institution;
 
-  @OneToMany(() => Payment, (payment) => payment.pdfImage)
+  @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 }
