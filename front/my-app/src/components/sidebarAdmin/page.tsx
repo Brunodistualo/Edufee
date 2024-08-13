@@ -5,49 +5,38 @@ import { createContext, useContext, useState } from "react";
 
 const SidebarContext = createContext({expanded : false});
 
-export default function Sidebar({ children }: any) {
+export default function Sidebar({ children,background }: any) {
     const [expanded, setExpanded] = useState(true);
     return (
         <>
-            <aside className="h-screen">
-                <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+            <aside className="h-full">
+                <nav className={`h-full flex flex-col ${background} border-r shadow-sm`}>
                     <div className="p-4 pb-2 flex justify-between items-center">
                         <div></div>
                         <button onClick={() => setExpanded((curr) => !curr)} className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100">
                             {expanded ? <ChevronFirst /> : <ChevronLast />}
                         </button>
                     </div>
-
                     <SidebarContext.Provider value={{ expanded }}>
                         <ul className="flex-1 px-3">{children}</ul>
                     </SidebarContext.Provider>
-
-                    <div className="border-t flex p-3">
-                        <img src="" className="w-10 h-10 rounded-md" />
-                        <div className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
-                            <div className="leading-4">
-                                <h4 className="font-semibold">constGenius</h4>
-                                <span className="text-xs text-gray-600">constgenius@gmail.com</span>
-                            </div>
-                            <MoreVertical size={20} />
-                        </div>
-                    </div>
                 </nav>
             </aside>
         </>
     );
 }
 
-export function SidebarItem({ icon, text, active, alert, onClick }: any) {
+export function SidebarItem({ icon, text, active, alert, onClick,bgActive }: any) {
     const { expanded } = useContext(SidebarContext);
     return (
         <li
-            className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800" : "hover:bg-indigo-50 text-gray-600"
+            className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${active ? `${bgActive} text-gray-800` : "hover:bg-[rgb(210,210,210)] text-gray-700"
                 }`}
             onClick={onClick}
         >
             {icon}
-            <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>{text}</span>
+            <span className={`overflow-hidden font-bold transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>{text}
+            </span>
             {alert && <div className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? "" : "top-2"}`}></div>}
             {!expanded && (
                 <div
