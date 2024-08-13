@@ -47,6 +47,34 @@ export class UsersRepository {
     return getId;
   }
 
+  async getAllByInstitution(
+    institutionId: string,
+    page: number,
+    limit: number,
+  ) {
+    const institution = await this.institutionRepository.findOneBy({
+      id: institutionId,
+    });
+    if (!institution) {
+      throw new BadRequestException(
+        `Este ID: ${institution} no pertenece a una institución`,
+      );
+    }
+    const [users, count] = await Promise.all([
+      this.usersRepository.find({
+        where: { institution: { id: institutionId } },
+        skip: (page - 1) * limit,
+        take: limit,
+        select: ['id', 'name', 'lastname', 'email', 'dni', 'address', 'phone'],
+      }),
+      this.usersRepository.count({
+        where: { institution: { id: institutionId } },
+      }),
+    ]);
+
+    return { users, count, page, limit };
+  }
+
   async signUp(user: createUserDto) {
     const { email, dni, institutionName } = user;
     const errors = [];
