@@ -22,4 +22,11 @@ export class SendMailsService {
   sendRejectionEmail(user: any): Promise<void> {
     return this.sendMailsRepository.sendRejectionEmail(user);
   }
+
+  sendPaymentConfirmationEmail(user: {
+    email: string;
+    name: string;
+  }): Promise<void> {
+    return this.sendMailsRepository.sendPaymentConfirmationEmail(user);
+  }
 }

@@ -10,6 +10,7 @@ import { PaymentDto } from './payment.dto';
 import { User } from '../users/users.entity';
 import { Institution } from '../institution/institution.entity';
 import { InstitutionPayment } from './paymentInstitutions/paymentInstitutions.entity';
+import { SendMailsRepository } from '../send-mails/send-mails.repository';
 
 @Injectable()
 export class PaymentsRepository {
@@ -21,7 +22,8 @@ export class PaymentsRepository {
     @InjectRepository(Institution)
     private readonly institutionRepository: Repository<Institution>,
     @InjectRepository(InstitutionPayment)
-    private readonly institutionPaymentRepository: Repository<InstitutionPayment>, // Repositorio para InstitutionPayment
+    private readonly institutionPaymentRepository: Repository<InstitutionPayment>,
+    private readonly sendEmailRepository: SendMailsRepository,
   ) {}
 
   async getAllPayments(page: number, limit: number) {
@@ -60,7 +62,7 @@ export class PaymentsRepository {
     }
 
     const newPayment = new Payment();
-    const fee = amount * 0.01;
+    const fee = Math.round(amount * 0.01);
 
     newPayment.date = new Date().toLocaleDateString();
     newPayment.amount = amount;
@@ -71,6 +73,11 @@ export class PaymentsRepository {
     institution.mustPay += fee;
 
     await this.institutionRepository.save(institution);
+
+    await this.sendEmailRepository.sendPaymentConfirmationEmail({
+      email: user.email,
+      name: user.name,
+    });
 
     return await this.paymentRepository.save(newPayment);
   }
