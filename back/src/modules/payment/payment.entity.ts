@@ -30,7 +30,7 @@ export class Payment {
   @Column()
   amount: number;
 
-  @ManyToOne(() => User, (user) => user)
+  @ManyToOne(() => User, (user) => user.payments)
   user: User;
 
   @ManyToOne(() => Institution, (institution) => institution.payments)

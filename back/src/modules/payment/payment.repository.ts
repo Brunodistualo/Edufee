@@ -109,4 +109,40 @@ export class PaymentsRepository {
 
     return institutionPayment;
   }
+
+  async getPaymentsByStudent(studentId: string, page: number, limit: number) {
+    const pageNumber = parseInt(page as unknown as string, 10);
+    const limitNumber = parseInt(limit as unknown as string, 10);
+
+    if (isNaN(pageNumber) || isNaN(limitNumber)) {
+      throw new BadRequestException(
+        'Los valores de page y limit deben ser números válidos.',
+      );
+    }
+
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.payments', 'payment')
+      .where('user.id = :id', { id: studentId })
+      .getOne();
+
+    if (!user) {
+      throw new BadRequestException(
+        `No se encontraron pagos registrados para el estudiante con ID: ${studentId}`,
+      );
+    }
+
+    const [payments, count] = await Promise.all([
+      this.paymentRepository.find({
+        where: { user: { id: studentId } },
+        skip: (pageNumber - 1) * limitNumber,
+        take: limitNumber,
+      }),
+      this.paymentRepository.count({
+        where: { user: { id: studentId } },
+      }),
+    ]);
+
+    return { payments, count };
+  }
 }
