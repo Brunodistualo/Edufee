@@ -26,7 +26,7 @@ export class PaymentDetailController {
   @ApiBearerAuth()
   @Roles(Role.admin, Role.student, Role.institution)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('id')
+  @Get(':id')
   getPaymentById(@Param('id', ParseUUIDPipe) id: string) {
     return this.paymentService.getPaymentById(id);
   }
@@ -41,12 +41,6 @@ export class PaymentDetailController {
   ) {
     return this.paymentService.getAllPayments(Number(page), Number(limit));
   }
-
-  // @Post()
-  // handleTest(@Body() body: any) {
-  //   console.log('Received data:', body); // Aquí se imprime cualquier dato recibido
-  //   return { status: 'success', data: body }; // Devuelve los datos recibidos como respuesta
-  // }
 
   @Post('register')
   async registerPayment(@Body() paymentDto: PaymentDto) {

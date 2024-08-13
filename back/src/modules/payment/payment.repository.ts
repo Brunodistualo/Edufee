@@ -21,7 +21,7 @@ export class PaymentsRepository {
     @InjectRepository(Institution)
     private readonly institutionRepository: Repository<Institution>,
     @InjectRepository(InstitutionPayment)
-    private readonly institutionPaymentRepository: Repository<InstitutionPayment>, // Repositorio para InstitutionPayment
+    private readonly institutionPaymentRepository: Repository<InstitutionPayment>,
   ) {}
 
   async getAllPayments(page: number, limit: number) {

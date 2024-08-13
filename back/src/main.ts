@@ -23,7 +23,6 @@ async function bootstrap() {
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
     credentials: true,
   });
-  // Configura Socket.IO usando el IoAdapter de NestJS
   app.useWebSocketAdapter(new IoAdapter(app));
 
   await app.listen(PORT);
