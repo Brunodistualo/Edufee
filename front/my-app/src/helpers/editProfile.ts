@@ -1,17 +1,26 @@
+import { usersEdit } from "@/interfaces/interfaces";
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const urlDomain = process.env.AUTH0_ISSUER_BASE_URL;
 
-export const EditProfile = async (user: any, id: string) => {
+export const EditProfile = async (user: usersEdit, id: string) => {
+    const store = localStorage.getItem("user");
+    const userStore = JSON.parse(store!);
+
+    const token = userStore.state?.token;
+    console.log(token)
     try {
         const response = await fetch(`${apiUrl}/users/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer: ${token}`,
             },
             body: JSON.stringify(user),
         });
         const data = await response.json();
-        return data;
+        console.log(data);
+        return response;
     } catch (error) {
         console.error(error);
         throw error;
@@ -22,7 +31,6 @@ export const EditProfile = async (user: any, id: string) => {
 export async function getManagementApiToken() {
     const response = await fetch(`https://dev-lj6blfxnyizb5tei.us.auth0.com/oauth/token`, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -38,23 +46,28 @@ export async function getManagementApiToken() {
     return data.access_token;
 }
 
-export async function updateUser(userId: string, data: { email?: string; password?: string }) {
+export async function updateUser(userId: string, password: string ) {
     const token = await getManagementApiToken();
     console.log(token)
     try {
         console.log("entra aqui")
-        const response = await fetch(`${urlDomain}/api/v2/users/${userId}`, {
+        const response = await fetch(`https://dev-lj6blfxnyizb5tei.us.auth0.com/api/v2/users/${userId}`, {
             method: 'PATCH',
-            mode: 'no-cors',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+                password,
+                "connection": "Username-Password-Authentication"
+            }),
         });
-        console.log(response.status)
-        const responseData = await response.json();
-        return responseData;
+        console.log(response)
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(JSON.stringify(errorData));
+        }
+        return response;
     } catch (error) {
         console.log(error)
     }
