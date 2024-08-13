@@ -26,7 +26,7 @@ export class PaymentDetailController {
   @ApiBearerAuth()
   @Roles(Role.admin, Role.student, Role.institution)
   @UseGuards(AuthGuard, RolesGuard)
-  @Get('id')
+  @Get(':id')
   getPaymentById(@Param('id', ParseUUIDPipe) id: string) {
     return this.paymentService.getPaymentById(id);
   }

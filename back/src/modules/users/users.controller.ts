@@ -44,6 +44,22 @@ export class UsersController {
     return this.usersService.getId(id);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.admin, Role.institution)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('studentsBy/:institutionId')
+  async getAllByInstitution(
+    @Param('institutionId', ParseUUIDPipe) institutionId: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return await this.usersService.getAllByInstitution(
+      institutionId,
+      page,
+      limit,
+    );
+  }
+
   @Post('signup')
   signUp(@Body() user: createUserDto) {
     return this.usersService.signUp(user);
