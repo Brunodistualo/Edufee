@@ -10,7 +10,7 @@ const socket = io("http://localhost:3005");
 
 const ChatPage: NextPage = () => {
   const userData = DataUser((state) => state.userData);
-  const getData = DataUser((state) => state.getDataUser);
+  // const getData = DataUser((state) => state.getDataUser);
   const institutionsData = InstitutionsData((state) => state.institutionData);
   const getInstitutions = InstitutionsData((state) => state.getInstitutionData);
   const nombreCompleto = institutionsData.name || userData.name;
