@@ -1,4 +1,5 @@
 import { FormDataInstitute } from "@/hooks/useFormInstitute";
+import { instiEdit } from "@/interfaces/interfaces";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -63,5 +64,33 @@ export const getInstitutionsNames = async () => {
     return institutionNames;
   } catch (error) {
     throw error;
+  }
+}
+
+
+export const editInstitution = async (formData: instiEdit, institutionId: string) => {
+  const store = localStorage.getItem('user')
+  const user = store ? JSON.parse(store) : null;
+  const token = user?.state?.token;
+  console.log(token)
+  try {
+    const response = await fetch(`${apiUrl}/institution/${institutionId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer: ${token}`,
+      },
+      body: JSON.stringify(formData),
+    });
+    if (!response.ok) {
+      console.log(response.statusText);
+      throw new Error("Error al editar la institución");
+    }
+    const data = await response.json();
+    console.log(data)
+    return response;
+    
+  } catch (error) {
+    console.log(error)
   }
 }
