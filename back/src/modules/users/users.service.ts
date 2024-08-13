@@ -16,6 +16,10 @@ export class UsersService {
     return this.usersRepository.getId(id);
   }
 
+  getAllByInstitution(institutionId: string, page: number, limit: number) {
+    return this.usersRepository.getAllByInstitution(institutionId, page, limit);
+  }
+
   signUp(user: any) {
     return this.usersRepository.signUp(user);
   }
