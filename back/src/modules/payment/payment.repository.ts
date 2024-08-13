@@ -62,7 +62,7 @@ export class PaymentsRepository {
     }
 
     const newPayment = new Payment();
-    const fee = amount * 0.01;
+    const fee = Math.round(amount * 0.01);
 
     newPayment.date = new Date().toLocaleDateString();
     newPayment.amount = amount;
