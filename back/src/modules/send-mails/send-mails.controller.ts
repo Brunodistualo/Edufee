@@ -62,4 +62,15 @@ export class SendMailsController {
     await this.sendMailsService.sendRejectionEmail(user);
     return { message: 'Correo de rechazo enviado correctamente' };
   }
+
+  @Post('payment-confirmation')
+  async sendPaymentConfirmationEmail(@Body() body: any) {
+    const user = {
+      email: body.email,
+      name: body.name,
+    };
+    // const jwt = body.jwt;
+    await this.sendMailsService.sendPaymentConfirmationEmail(user);
+    return { message: 'Correo enviado correctamente' };
+  }
 }

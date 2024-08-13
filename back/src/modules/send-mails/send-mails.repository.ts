@@ -66,7 +66,7 @@ export class SendMailsRepository {
           <p>Para completar tu registro, por favor haz clic en el siguiente botón:</p>
            <a href="https://inti-tech-pf.vercel.app/profile/activate" style="text-decoration: none;">
             <button style="background: linear-gradient(90deg, #FFD700, #FFA500); color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
-              Activa tu cuenta
+              Ir a Edufee
             </button>
           </a>
           <p>Si tienes alguna pregunta, no dudes en contactarnos respondiendo a este correo.</p>
@@ -121,6 +121,27 @@ export class SendMailsRepository {
         <p><strong>Email:</strong> ${user.email}</p>
         <p><strong>Mensaje:</strong> ${user.message}</p>
       </div>
+      `,
+    });
+  }
+
+  async sendPaymentConfirmationEmail(user: {
+    email: string;
+    name: string;
+  }): Promise<void> {
+    await transporter.sendMail({
+      from: '"Edufee" <paymyacademic@gmail.com>',
+      to: user.email,
+      subject: '¡Tu pago fue exitoso!',
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <h2 style="color: #FFA500;">¡Hola, <span style="color: #FFD700;">${user.name}</span>!</h2>
+          <p>Nos complace informarte que tu pago ha sido procesado exitosamente.</p>
+          <p>Ya puedes verlo desde nuestra aplicación.</p>
+          <p>Si tienes alguna pregunta o necesitas más información, no dudes en contactarnos.</p>
+          <p>¡Gracias por elegir Edufee!</p>
+          <p>El equipo de Edufee 🧡</p>
+        </div>
       `,
     });
   }
