@@ -1,7 +1,6 @@
 import { usersEdit } from "@/interfaces/interfaces";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const urlDomain = process.env.AUTH0_ISSUER_BASE_URL;
 
 export const EditProfile = async (user: usersEdit, id: string) => {
     const store = localStorage.getItem("user");
@@ -29,15 +28,15 @@ export const EditProfile = async (user: usersEdit, id: string) => {
 
 
 export async function getManagementApiToken() {
-    const response = await fetch(`https://dev-lj6blfxnyizb5tei.us.auth0.com/oauth/token`, {
+    const response = await fetch(`https://dev-2fs5603nfuoxzdr2.us.auth0.com/oauth/token`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            client_id: "ogLiOLoIcltMAR3g7NSKPz0nuiQUe6Au",
-            client_secret: "_XeZuFtqDkVTFVp7X5IugDS0z2X6AReGE6tmPvF8rYmNcYuMxWfBltvWXTd7-eiJ",
-            audience: "https://dev-lj6blfxnyizb5tei.us.auth0.com/api/v2/",
+            client_id: "NtLluXFAKkHutmsckJ0FCjMDqAYYH9q8",
+            client_secret: "Uuibxr-hfEfchFC9sfg0jcyfTGDSDPEWR5V4VtLwIAT19qei1xtExZi9zUCZOhaD",
+            audience: "https://dev-2fs5603nfuoxzdr2.us.auth0.com/api/v2/",
             grant_type: "client_credentials"
         }),
     });
@@ -51,7 +50,7 @@ export async function updateUser(userId: string, password: string ) {
     console.log(token)
     try {
         console.log("entra aqui")
-        const response = await fetch(`https://dev-lj6blfxnyizb5tei.us.auth0.com/api/v2/users/${userId}`, {
+        const response = await fetch(`https://dev-2fs5603nfuoxzdr2.us.auth0.com/api/v2/users/${userId}`, {
             method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
