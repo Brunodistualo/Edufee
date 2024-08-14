@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import FormInput from "@/components/FormInput";
-import { FormDataStudent, useFormStudent } from "@/hooks/useFormStudent";
 import React, { useEffect, useState } from "react";
+import FormInput from "@/components/FormInput";
 import FormSelect from "@/components/FormSelect";
+import { FormDataStudent, useFormStudent } from "@/hooks/useFormStudent";
 import { getInstitutionsNames } from "@/helpers/institution.helper";
 
 const StudentRegisterForm: React.FC = () => {
@@ -15,13 +15,13 @@ const StudentRegisterForm: React.FC = () => {
     email: "",
     direccion: "",
     telefono: "",
-    institucion: ""
+    institucion: "",
   };
-  const { formData, errors, handleChange,handleSubmit, handleFileChange, setFormData } = useFormStudent(initialState);
+
+  const { formData, errors, handleChange, handleSubmit, handleFileChange, setFormData } = useFormStudent(initialState);
   const [institutions, setInstitutions] = useState<string[]>([]);
 
-
-  const fetchInstitutions = async() => {
+  const fetchInstitutions = async () => {
     try {
       const institutions: string[] = await getInstitutionsNames();
       setInstitutions(institutions);
@@ -30,24 +30,25 @@ const StudentRegisterForm: React.FC = () => {
         institucion: institutions[0] || "",
       }));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }
-  useEffect(()=> {
+  };
+
+  useEffect(() => {
     fetchInstitutions();
-  },[])
-  
+  }, []);
+
   if (isLoading) {
-    return <div className="h-[90vh] text-lg">Loading student form...</div>;
+    return <div className="h-[90vh] text-lg flex items-center justify-center">Cargando formulario de estudiante...</div>;
   }
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center space-y-8">
-      <div className="w-full max-w-md p-8 bg-[#8db2f3] border-2 border-black shadow-lg rounded-[2em] flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-4">Registro de Estudiante</h2>
-        <form className="w-full space-y-4" onSubmit={handleSubmit}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-blue-100 py-12">
+      <div className="w-full max-w-lg p-8 bg-gradient-to-b from-blue-200 via-blue-200 to-blue-300 border-2 border-gray-200 shadow-xl rounded-3xl">
+        <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">Registro de Estudiante</h2>
+        <form className="space-y-6 " onSubmit={handleSubmit}>
           <FormInput
             type="text"
             name="nombre"
@@ -57,7 +58,6 @@ const StudentRegisterForm: React.FC = () => {
             onChange={handleChange}
             error={errors.nombre}
           />
-
           <FormInput
             type="text"
             name="apellido"
@@ -86,7 +86,7 @@ const StudentRegisterForm: React.FC = () => {
             error={errors.direccion}
           />
           <FormInput
-            type="text"
+            type="tel"
             name="telefono"
             label="Teléfono"
             placeholder="1123908799"
@@ -102,19 +102,20 @@ const StudentRegisterForm: React.FC = () => {
             options={institutions}
           />
           <div>
-            <label htmlFor="photo-profile" className="mt-2 block font-bold">Subir foto de perfil (opcional)</label>
+            <label htmlFor="photo-profile" className="block text-sm font-bold text-gray-700">
+              Subir foto de perfil (opcional)
+            </label>
             <input
               id="photo-profile"
               type="file"
               name="fotoPerfil"
-              className="w-full p-3 border bg-gray-300 border-gray-300 rounded-md"
+              className="mt-2 w-full p-2 border border-gray-300 bg-slate-50 rounded-md focus:ring-blue-500 focus:border-blue-500"
               onChange={handleFileChange}
             />
           </div>
           <button
             type="submit"
-            onClick={handleSubmit}
-            className="w-full p-3 bg-[#16ABFF] border-2 border-black text-white rounded-md shadow-lg hover:bg-[#1657FF] transition-colors duration-300 mt-4"
+            className="w-full py-3 mt-4 bg-green-500 text-white font-bold text-lg rounded-md shadow-md hover:bg-green-700 transition-colors duration-300"
           >
             Registrar
           </button>

@@ -14,13 +14,14 @@ const InstituteRegisterForm: React.FC = () => {
     logo: null,
     banner: null,
   };
-  const { formData, errors, handleChange,handleSubmit, validate } = useFormInstitute(initialState);
+
+  const { formData, errors, handleChange, handleSubmit } = useFormInstitute(initialState);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center space-y-8">
-      <div className="w-full max-w-md p-8 bg-[#F9B253] border-2 border-black shadow-lg rounded-[2em] flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-4">Registro de Institución</h2>
-        <form className="w-full space-y-4" onSubmit={handleSubmit}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-blue-100 py-12">
+      <div className="w-full max-w-lg p-8 bg-gradient-to-r from-orange-200 via-orange-300 to-orange-400 shadow-xl rounded-3xl">
+        <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-800">Registro de Institución</h2>
+        <form className="space-y-6 " onSubmit={handleSubmit}>
           <FormInput
             type="text"
             name="nombreInstitucion"
@@ -28,7 +29,7 @@ const InstituteRegisterForm: React.FC = () => {
             placeholder="Harvard University"
             value={formData.nombreInstitucion}
             onChange={handleChange}
-            error={errors.name}
+            error={errors.nombreInstitucion}
           />
           <FormInput
             type="text"
@@ -40,7 +41,7 @@ const InstituteRegisterForm: React.FC = () => {
             error={errors.direccion}
           />
           <FormInput
-            type="text"
+            type="tel"
             name="telefono"
             label="Teléfono"
             placeholder="555-555-5555"
@@ -57,34 +58,35 @@ const InstituteRegisterForm: React.FC = () => {
             onChange={handleChange}
             error={errors.numeroCuenta}
           />
-
-          <div>
-            <label htmlFor="logo" className="mt-2 block font-bold">
-              Subir Logo (opcional)
-            </label>
-            <input
-              id="logo"
-              type="file"
-              name="logo"
-              className="w-full p-3 border bg-gray-300 border-gray-300 rounded-md"
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="banner" className="mt-2 block font-bold">
-              Subir Banner (opcional)
-            </label>
-            <input
-              id="banner"
-              type="file"
-              name="banner"
-              className="w-full p-3 border bg-gray-300 border-gray-300 rounded-md"
-              onChange={handleChange}
-            />
+          <div className="flex flex-col space-y-4">
+            <div>
+              <label htmlFor="logo" className="block font-bold text-sm text-gray-700 mb-1">
+                Subir Logo (opcional)
+              </label>
+              <input
+                id="logo"
+                type="file"
+                name="logo"
+                className="mt-2 w-full p-3 border bg-slate-100 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 transition duration-150 ease-in-out"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="banner" className="block font-bold text-sm  text-gray-700 mb-1">
+                Subir Banner (opcional)
+              </label>
+              <input
+                id="banner"
+                type="file"
+                name="banner"
+                className="mt-2 w-full p-3 border bg-slate-100 border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:border-blue-500 transition duration-150 ease-in-out"
+                onChange={handleChange}
+              />
+            </div>
           </div>
           <button
             type="submit"
-            className="w-full mt-4 p-3 bg-[#16ABFF] border-2 border-black text-white rounded-md shadow-lg hover:bg-[#1657FF] transition-colors duration-300"
+            className="w-full py-3 mt-4 bg-green-500 text-white font-bold text-lg rounded-md shadow-md hover:bg-green-700 transition-colors duration-300"
           >
             Registrar
           </button>
