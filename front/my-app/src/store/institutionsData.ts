@@ -24,7 +24,6 @@ interface InstitucionState {
     getInstitutionData: () => Promise<void>;
 }
 
-
 export const InstitutionsData = create<InstitucionState>((set) => ({
     institutions: [],
     institutionData: {},
