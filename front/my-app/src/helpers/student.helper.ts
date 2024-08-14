@@ -50,3 +50,27 @@ export const uploadStudentImageProfile = async (studentId: string, file: File) =
     throw new Error(error.message);
   }
 }
+export const getStudentsByInstitute = async(instituteId: string) => {
+  try {
+      const token = JSON.parse(localStorage.getItem('user') ?? '{}')?.state?.token;
+      console.log(instituteId)
+      if (!token) {
+        throw new Error('Token not found');
+      }
+      const response = await fetch(`${apiUrl}/users/studentsBy/${instituteId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer: ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Error al obtener los estudiantes');
+    }
+    const data = await response.json();
+    console.log(data)
+    return data.users;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
