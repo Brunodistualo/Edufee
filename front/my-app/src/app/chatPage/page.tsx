@@ -1,14 +1,12 @@
 "use client";
 import { useState, useEffect, ChangeEvent, FormEvent, useRef } from "react";
 import io from "socket.io-client";
-import { NextPage } from "next";
-import "tailwindcss/tailwind.css";
 import { DataUser } from "@/store/userData";
 import { InstitutionsData } from "@/store/institutionsData";
 
 const socket = io("http://localhost:3005");
 
-const ChatPage: NextPage = () => {
+const ChatPage = () => {
   const userData = DataUser((state) => state.userData);
   // const getData = DataUser((state) => state.getDataUser);
   const institutionsData = InstitutionsData((state) => state.institutionData);
