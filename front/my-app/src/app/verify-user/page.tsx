@@ -25,6 +25,7 @@ const LayerAuth = () => {
           const data = await response.json();
           if (response.ok) {
             const { token } = data;
+            console.log(token)
             const payload = JSON.parse(atob(token.split(".")[1]));
             const { roles, isActive } = payload;
             setToken(token);

@@ -15,6 +15,8 @@ export default function ProfileClient() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
+  console.log(user)
+
   const [dataForm, setDataForm] = useState({
     name: '',
     phone: '',
@@ -260,28 +262,34 @@ export default function ProfileClient() {
                 type="text"
               />
             </div>
-            <div className="p-3">
-              <label className="text-black text-lg">Contraseña actual :</label>
-              <input
-                value={currentPassword}
-                onChange={handleChange}
-                name="currentPassword"
-                className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
-                placeholder="Contraseña actual"
-                type="password"
-              />
-            </div>
-            <div className="p-3">
-              <label className="text-black text-lg">Contraseña nueva :</label>
-              <input
-                value={newPassword}
-                onChange={handleChange}
-                name="newPassword"
-                className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
-                placeholder="Contraseña nueva"
-                type="password"
-              />
-            </div>
+            {
+              user?.sub?.includes("auth0") ? (
+                <>
+                  <div className="p-3">
+                    <label className="text-black text-lg">Contraseña actual :</label>
+                    <input
+                      value={currentPassword}
+                      onChange={handleChange}
+                      name="currentPassword"
+                      className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
+                      placeholder="Contraseña actual"
+                      type="password"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <label className="text-black text-lg">Contraseña nueva :</label>
+                    <input
+                      value={newPassword}
+                      onChange={handleChange}
+                      name="newPassword"
+                      className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
+                      placeholder="Contraseña nueva"
+                      type="password"
+                    />
+                  </div>
+                </>
+              ) : null
+            }
 
           </div>
         </div>
