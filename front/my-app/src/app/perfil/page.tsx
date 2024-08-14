@@ -128,7 +128,7 @@ const InstitutionProfile = () => {
                 });
                 getInstitution();
             }
-        }catch (error) {
+        } catch (error) {
             console.error("Error al actualizar la contraseña:", error);
             swal({
                 title: "Error",
@@ -151,7 +151,7 @@ const InstitutionProfile = () => {
                 });
                 return;
             }
-    
+
             if (currentPassword !== newPassword) {
                 swal({
                     title: "Error",
@@ -161,7 +161,7 @@ const InstitutionProfile = () => {
                 });
                 return;
             }
-    
+
             try {
                 const passwordResponse = await updateUser(user?.sub!, newPassword);
                 console.log(passwordResponse);
@@ -195,7 +195,7 @@ const InstitutionProfile = () => {
             }
 
         }
-    
+
         if (JSON.stringify(formData) === JSON.stringify(originalData)) {
             swal({
                 title: "No se realizaron cambios",
@@ -205,10 +205,10 @@ const InstitutionProfile = () => {
             });
             return;
         }
-    
+
         try {
             const response = await editInstitution({ ...formData }, Data.id!);
-    
+
             if (response?.ok) {
                 swal({
                     title: "Datos actualizados",
@@ -235,7 +235,7 @@ const InstitutionProfile = () => {
             });
         }
     };
-    
+
 
     return (
         <div className=" pt-24 pb-10 bg-gradient-radial from-[#e0f5f3] to-[#ffffff]">
@@ -334,28 +334,34 @@ const InstitutionProfile = () => {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <div className="p-4 flex flex-col text-center">
-                                <label className="text-black text-lg mb-2">Contraseña nueva:</label>
-                                <input
-                                    value={newPassword}
-                                    onChange={handleInputChange}
-                                    name="password"
-                                    className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
-                                    placeholder="Nueva Contraseña"
-                                    type="password"
-                                />
-                            </div>
-                            <div className="p-4 flex flex-col text-center">
-                                <label className="text-black text-lg mb-2">Confirmar contraseña:</label>
-                                <input
-                                    value={currentPassword}
-                                    onChange={handleInputChange}
-                                    name="confirmPassword"
-                                    className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
-                                    placeholder="Confirmar Contraseña"
-                                    type="password"
-                                />
-                            </div>
+                            {
+                                user?.sub?.includes("auth0") ? (
+                                    <>
+                                        <div className="p-4 flex flex-col text-center">
+                                            <label className="text-black text-lg mb-2">Contraseña nueva:</label>
+                                            <input
+                                                value={newPassword}
+                                                onChange={handleInputChange}
+                                                name="password"
+                                                className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
+                                                placeholder="Nueva Contraseña"
+                                                type="password"
+                                            />
+                                        </div>
+                                        <div className="p-4 flex flex-col text-center">
+                                            <label className="text-black text-lg mb-2">Confirmar contraseña:</label>
+                                            <input
+                                                value={currentPassword}
+                                                onChange={handleInputChange}
+                                                name="confirmPassword"
+                                                className="h-9 text-black bg-gray-200/40 border-b border-black rounded-t-lg p-2 mb-8 placeholder:p-2 placeholder:italic focus:outline-none"
+                                                placeholder="Confirmar Contraseña"
+                                                type="password"
+                                            />
+                                        </div>
+                                    </>
+                                ) : null
+                            }
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-20 -mt-4">
