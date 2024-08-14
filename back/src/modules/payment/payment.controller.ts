@@ -42,6 +42,15 @@ export class PaymentDetailController {
     return this.paymentService.getAllPayments(Number(page), Number(limit));
   }
 
+  @Get('student/:studentId')
+  async getPayments(
+    @Param('studentId', ParseUUIDPipe) studentId: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.paymentService.getPaymentsByStudent(studentId, page, limit);
+  }
+
   @Post('register')
   async registerPayment(@Body() paymentDto: PaymentDto) {
     return this.paymentService.registerPayment(paymentDto);

@@ -129,23 +129,26 @@ const App = () => {
 
   return (
     <div className="flex pt-20 h-screen">
-      <Sidebar>
+      <Sidebar background="bg-white">
         <SidebarItem
           icon={<User />}
           text="Alumnos"
           active={view === "students"}
+          bgActive="bg-gradient-to-tr from-indigo-200 to-indigo-100"
           onClick={() => setView("students")}
         />
         <SidebarItem
           icon={<School />}
           text="Instituciones"
           active={view === "institutions"}
+          bgActive="bg-gradient-to-tr from-indigo-200 to-indigo-100"
           onClick={() => setView("institutions")}
         />
         <SidebarItem
           icon={<CheckSquare />}
           text="Aprobar Instituciones"
           active={view === "approve"}
+          bgActive="bg-gradient-to-tr from-indigo-200 to-indigo-100"
           onClick={() => setView("approve")}
         />
       </Sidebar>
