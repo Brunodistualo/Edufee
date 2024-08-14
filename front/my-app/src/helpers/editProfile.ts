@@ -71,3 +71,29 @@ export async function updateUser(userId: string, password: string ) {
         console.log(error)
     }
 }
+
+export async function deleteUser(userId: string) {
+    const store = localStorage.getItem("user");
+    const userStore = JSON.parse(store!);
+
+    const token = userStore.state?.token;
+    try {
+        const response = await fetch (`${apiUrl}/users/delete/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer: ${token}`,
+            }
+        })
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(JSON.stringify(errorData));
+        }
+        console.log(response)
+        const data = await response.json();
+        console.log(data)
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+}
