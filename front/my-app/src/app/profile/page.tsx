@@ -7,12 +7,15 @@ import { uploadImage } from '@/helpers/uploadImage';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { deleteUser, EditProfile, updateUser } from '@/helpers/editProfile';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { tokenStore } from '@/store/tokenStore';
 
 
 export default function ProfileClient() {
   const [file, setFile] = useState<File | null>(null);
   const getUser = DataUser((state) => state.getDataUser);
   const userData = DataUser((state) => state.userData);
+  const setToken = tokenStore((state) => state.setToken);
   const { user, error, isLoading } = useUser();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -205,6 +208,8 @@ export default function ProfileClient() {
             icon: "success",
             timer: 4000,
           });
+          setToken("");
+          Cookies.remove("authToken");
           router.push('/api/auth/logout');
         }
       }
