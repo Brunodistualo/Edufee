@@ -18,6 +18,8 @@ export interface FormDataStudent {
   institucion: string
 }
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const useFormStudent = (initialState: FormDataStudent) => {
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState<any>({});
@@ -59,7 +61,18 @@ export const useFormStudent = (initialState: FormDataStudent) => {
       try {
         const studentId = await registerStudent(formData);
         await handleSubmitStudentImageProfile(studentId);
-        SetToken(studentId)
+        console.log(studentId)
+        const response = await fetch(`${apiUrl}/auth/signin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+          })
+        })
+        const data = await response.json();
+        SetToken(data.token!);
         alert("Estudiante creado exitosamente")
         router.push("/student/dashboard")
       } catch (error: any) {
