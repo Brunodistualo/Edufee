@@ -4,16 +4,17 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
 interface institutionData {
+  id?: string;
+  name?: string;
+  email?: string;
   accountNumber?: string;
   address?: string;
-  banner?: string;
-  email?: string;
-  id?: string;
-  isActive?: boolean;
-  logo?: string;
-  name?: string;
   phone?: string;
+  logo?: string;
+  banner?: string;
   role?: string;
+  mustPay?: number;
+  isActive?: boolean;
 }
 
 interface Data {
@@ -42,16 +43,19 @@ interface AllData {
     imgProfile?: string | null;
     role?: string;
     status?: string;
+    institution?: institutionData;
   }[];
 }
 
 
 interface UserState {
   userData: Data;
-  AllData: AllData[]
+  AllData: AllData[];
   getDataUser: () => Promise<void>;
   getAllData: () => Promise<void>;
+  updateData: (status: boolean, id: string) => Promise<void>;
 }
+
 
 export const DataUser = create<UserState>((set) => ({
   userData: [],
@@ -65,8 +69,6 @@ export const DataUser = create<UserState>((set) => ({
       const dataToken = JSON.parse(store);
       const token = dataToken.state?.token;
       const payload = JSON.parse(atob(token.split(".")[1]));
-      console.log(payload.id);
-      console.log("llega esto del token", token);
 
       const response = await fetch(
         `${apiUrl}/users/${payload.id}`,
@@ -79,8 +81,7 @@ export const DataUser = create<UserState>((set) => ({
         }
       );
       const data = await response.json();
-      console.log(data);
-      set({ userData : data });
+      set({ userData: data });
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -101,10 +102,43 @@ export const DataUser = create<UserState>((set) => ({
         },
       });
       const data = await response.json();
-      console.log(data);
       set({ AllData: Array.isArray(data) ? data : [data] });
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
+  },
+  updateData: async (status: boolean, id: string) => {
+    const store = localStorage.getItem("user");
+    if (!store) {
+      throw new Error("No hay token");
+    }
+    const dataToken = JSON.parse(store);
+    const token = dataToken.state?.token;
+    try {
+      const response = await fetch(`${apiUrl}/users/changeStatus/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+      const updatedUser = await response.json();
+      set((state) => {
+        const updatedData = state.AllData.map((userGroup) => ({
+          ...userGroup,
+          allUser: userGroup.allUser.map((user) =>
+            user.id === id ? { ...user, status: updatedUser.status } : user
+          ),
+        }));
+        return { AllData: updatedData };
+      });
+    } catch (error) {
+      console.error("Error al actualizar el estado del usuario:", error);
+    }
   }
+
+
+
+
 }));

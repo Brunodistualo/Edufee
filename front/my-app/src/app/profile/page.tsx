@@ -210,6 +210,7 @@ export default function ProfileClient() {
           });
           setToken("");
           Cookies.remove("authToken");
+          Cookies.remove("appSession")
           router.push('/api/auth/logout');
         }
       }
