@@ -95,7 +95,7 @@ const DashboardInstitution: React.FC = () => {
 
 
   return (
-    <section className="h-screen flex pt-20 items-center">
+    <section className="h-screen flex pt-16 items-center">
       <Sidebar background="bg-orange-100">
         <SidebarItem
           icon={<User />}
