@@ -130,7 +130,7 @@ const Navbar = () => {
                   leaveTo="transform opacity-0 scale-95">
                   <div className="backdrop-blur-md bg-gray-800 absolute top-10 right-0 flex flex-col items-center rounded-lg text-white z-50 w-44 ">
                     {
-                      userData.role === "student" ? (
+                      userData.role === "student" || dataInsti.role === "admin" ? (
                         <Link href="/profile" className="p-3 text-base flex items-center justify-between w-full hover:bg-white/10 hover:rounded-t-lg transition-all duration-200">
                           Perfil
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
