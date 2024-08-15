@@ -132,7 +132,7 @@ function PaymentContent() {
         registrationInProgressRef.current = false;
         return;
       }
-      const apiBaseUrl = process.env.AUTH0_BASE_URL || "http://localhost:3005";
+      const apiBaseUrl = "https://edufee-dnpi.onrender.com";
       try {
         const response = await fetch(`${apiBaseUrl}/payments/register`, {
           method: "POST",
