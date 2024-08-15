@@ -193,18 +193,18 @@ export class UsersRepository {
       const randomString = Math.random().toString(36).substring(2, 10);
       const randomEmail = `deleted_${randomString}@example.com`;
       const randomDni = `${Math.floor(10000000 + Math.random() * 90000000)}`;
-      user.name = 'xxxx';
-      user.lastname = 'xxxx';
+      user.name = '   ';
+      user.lastname = '  ';
       user.email = randomEmail;
       user.dni = randomDni;
-      user.address = 'xxxx';
-      user.phone = 'xxxx';
-      user.imgProfile = 'xxxx';
-      user.status = false;
+      user.address = '   ';
+      user.phone = '   ';
+      user.imgProfile = '  ';
+      user.status = true;
 
       await this.usersRepository.save(user);
 
-      return 'Usuario eliminado con éxito';
+      return { message: 'Usuario eliminado con éxito' };
     } catch (error) {
       throw new InternalServerErrorException(
         `Error al eliminar usuario. ${error}`,

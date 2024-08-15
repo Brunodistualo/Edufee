@@ -5,16 +5,21 @@ import swal from 'sweetalert';
 import { DataUser } from '@/store/userData';
 import { uploadImage } from '@/helpers/uploadImage';
 import { PencilIcon } from '@heroicons/react/24/solid';
-import { EditProfile, updateUser } from '@/helpers/editProfile';
+import { deleteUser, EditProfile, updateUser } from '@/helpers/editProfile';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { tokenStore } from '@/store/tokenStore';
+
 
 export default function ProfileClient() {
   const [file, setFile] = useState<File | null>(null);
   const getUser = DataUser((state) => state.getDataUser);
   const userData = DataUser((state) => state.userData);
+  const setToken = tokenStore((state) => state.setToken);
   const { user, error, isLoading } = useUser();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-
+  const router = useRouter();
   console.log(user)
 
   const [dataForm, setDataForm] = useState({
@@ -184,6 +189,35 @@ export default function ProfileClient() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      const willDelete = await swal({
+        title: "¿Estás seguro?",
+        text: "Esta acción eliminará tu cuenta permanentemente. ¿Deseas continuar?",
+        icon: "warning",
+        buttons: ["Cancelar", "Eliminar cuenta"],
+        dangerMode: true,
+      });
+
+      if (willDelete) {
+        const response = await deleteUser(userData.id!);
+        if (response?.ok) {
+          swal({
+            title: "Cuenta eliminada",
+            text: "Tu cuenta ha sido eliminada",
+            icon: "success",
+            timer: 4000,
+          });
+          setToken("");
+          Cookies.remove("authToken");
+          router.push('/api/auth/logout');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   if (isLoading) return <div className='text-black text-3xl absolute top-1/2 left-1/2 translate-x-0 -translate-y-1/2'>Loading...</div>;
 
@@ -295,7 +329,9 @@ export default function ProfileClient() {
         </div>
         <div className="flex justify-center items-center gap-20 -mt-4">
           <button type="submit" className="px-4 py-2 rounded-xl border-2 border-[#55A058] bg-lightorangeinti text-black font-medium hover:scale-105 transition-all duration-300 ease-in-out">Guardar cambios</button>
-          <div className="px-4 py-2 rounded-xl border-2 border-red-500 bg-transparent text-black font-medium hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer">
+          <div
+            onClick={handleDeleteAccount}
+            className="px-4 py-2 rounded-xl border-2 border-red-500 bg-transparent text-black font-medium hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer">
             Cerrar mi cuenta
           </div>
         </div>
