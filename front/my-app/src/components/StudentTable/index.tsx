@@ -1,7 +1,6 @@
 'use client'
 
-import { getStudentsByInstitute } from "@/helpers/student.helper";
-import { InstitutionsData } from "@/store/institutionsData";
+
 import { useEffect, useState } from "react";
 
 export interface Student {
@@ -70,6 +69,8 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
 
 
   return (
+    <>
+    {studentByInstitute?
     <>
       <div className="flex gap-4">
         {/* Filtro */}
@@ -152,6 +153,9 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
           </tbody>
         </table>
       </div>
+    </> 
+    : 
+    <div className="h-[90vh] text-lg flex items-center justify-center">No hay ningún alumno registrado en esta institución</div>}
     </>
   );
 };

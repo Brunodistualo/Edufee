@@ -14,19 +14,33 @@ interface InstiData {
     name?: string;
     phone?: string;
     role?: string;
+    mustPay?: string;
+}
+
+interface ReceiptData {
+    id?: string;
+    date?: string;
+    amount?: string;
+    account?: number;
 }
 
 interface InstitucionState {
     institutions: InstiData[];
     institutionData: InstiData;
+    ticketInsti: ReceiptData[];
     getInstitutions: () => Promise<void>;
     updateInstitutionStatus: (id: string, status: boolean) => Promise<void>;
     getInstitutionData: () => Promise<void>;
+    createReceipt: (id: string) => Promise<Response | undefined>;
+    setAdmin: (id: string) => Promise<Response | undefined>;
+    setInstitution: (id: string) => Promise<Response | undefined>;
+    getTickets: (id: string) => Promise<void>;
 }
 
 export const InstitutionsData = create<InstitucionState>((set) => ({
     institutions: [],
     institutionData: {},
+    ticketInsti: [],
     async getInstitutions() {
         try {
             const store = localStorage.getItem("user");
@@ -43,7 +57,7 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                 },
             });
             const data = await response.json();
-            console.log("esta son las instis", data)
+            console.log(data)
             set({ institutions: data });
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -68,10 +82,6 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
                 }),
             });
             const data = await response.json();
-            if (response.ok) {
-                alert("")
-            }
-            console.log(data);
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
@@ -100,6 +110,66 @@ export const InstitutionsData = create<InstitucionState>((set) => ({
             console.error("Error fetching user data:", error);
         }
     },
+    createReceipt: async (id: string) => {
+        try {
+            const response = await fetch(`${apiUrl}/payments/register/institution/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+            const data = await response.json()
+            console.log(data)
+            set({ ticketInsti: data })
+            return response
+        } catch (error) {
+            console.error(error)
+        }
+    },
+    setAdmin: async (id: string) => {
+        try {
+            const response = await fetch(`${apiUrl}/institution/asignAdmin/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+            return response
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    },
+    setInstitution: async (id: string) => {
+        try {
+            const response = await fetch(`${apiUrl}/institution/quitarAdmin/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+            return response
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    },
+    getTickets: async (id: string) => {
+        try {
+            const response = await fetch(`${apiUrl}/payments/institution/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            })
+            const data = await response.json()
+            console.log(data)
+            set({ ticketInsti: data })
+        }catch (error) {
+            console.error(error)
+        }
 
-
+    }
 }))

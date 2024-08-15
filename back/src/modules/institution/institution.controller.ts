@@ -88,4 +88,11 @@ export class InstitutionController {
   ): Promise<Institution> {
     return this.institutionService.toRoleAdmin(id);
   }
+
+  @Put('quitarAdmin/:id')
+  async quitarRolAdmin(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<Institution> {
+    return this.institutionService.quitarRolAdmin(id);
+  }
 }
