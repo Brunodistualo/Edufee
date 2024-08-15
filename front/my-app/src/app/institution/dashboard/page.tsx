@@ -2,7 +2,6 @@
 
 import Sidebar, { SidebarItem } from "@/components/sidebarAdmin/page";
 import StudentTableByInstitute, { Student } from "@/components/StudentTable";
-import StudentTable from "@/components/StudentTable";
 import { getStudentsByInstitute } from "@/helpers/student.helper";
 import { InstitutionsData } from "@/store/institutionsData";
 import { User } from "lucide-react";
