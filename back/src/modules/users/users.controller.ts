@@ -85,7 +85,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.admin, Role.student)
+  @Roles(Role.admin)
   @UseGuards(AuthGuard, RolesGuard)
   @Put('changeStatus/:id')
   async changeStatus(
