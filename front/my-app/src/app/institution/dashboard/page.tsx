@@ -69,7 +69,6 @@ const DashboardInstitution: React.FC = () => {
     }
     fetchGetPaymentsByInstitute()
   },[institute?.id])
-  console.log(paymentsByInstitute)
 
   const handleModal = () => {
     const tickets = Tickets || []; // Ensure Tickets is an array

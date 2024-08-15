@@ -74,3 +74,16 @@ export const getStudentsByInstitute = async(instituteId: string) => {
     throw new Error(error.message);
   }
 }
+
+export const getStudentsPayments = async(studentId: string) => {
+  try {
+      const response = await fetch(`${apiUrl}/payments/student/${studentId}`);
+    if (!response.ok) {
+      throw new Error('Error al obtener los pagos');
+    }
+    const data = await response.json();
+    return data.payments;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}
