@@ -67,6 +67,7 @@ export class PaymentsRepository {
       amount: payment.amount,
       pdfImage: payment.pdfImage,
       userId: payment.user.id,
+      userName: payment.user.name + ' ' + payment.user.lastname,
     }));
   }
 
