@@ -101,7 +101,7 @@ const DashboardInstitution: React.FC = () => {
   };
 
   return (
-    <section className="h-screen flex pt-20 items-center">
+    <section className="h-screen flex pt-16 items-center">
       <Sidebar background="bg-orange-100">
         <SidebarItem
           icon={<User />}
@@ -119,16 +119,11 @@ const DashboardInstitution: React.FC = () => {
         />
       </Sidebar>
       <div className="flex-1 h-full bg-orange-50 p-12">
-        {isLoading ? (
-          <div className="h-[90vh] text-lg flex items-center justify-center">
-            Cargando tabla de estudiantes...
-          </div>
-        ) : (
-          <StudentTableByInstitute
-            studentByInstitute={studentsByInstitute}
-            setStudentsByInstitute={setStudentsByInstitute}
-          />
-        )}
+        {isLoading ?
+          <div className="h-[90vh] text-lg flex items-center justify-center">Cargando tabla de estudiantes...</div>
+          :
+          <StudentTableByInstitute studentByInstitute={studentsByInstitute}  />
+        }
       </div>
     </section>
   );

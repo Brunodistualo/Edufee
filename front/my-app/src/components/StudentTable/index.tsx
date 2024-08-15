@@ -14,13 +14,12 @@ export interface Student {
 }
 
 
-const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStudentsByInstitute: (students: Student[]) => void } >  = ({ studentByInstitute, setStudentsByInstitute }) => {
+const StudentTableByInstitute: React.FC< { studentByInstitute: Student[];  } >  = ({ studentByInstitute }) => {
 
   const [filter, setFilter] = useState<string>("");
   const [filterField, setFilterField] = useState<string>("name");
   const [sortField, setSortField] = useState<string>("id");
   const [sortOrder, setSortOrder] = useState<string>("asc");
-  const [isLoading, setIsLoading] = useState(true);
 
   const filteredStudents = studentByInstitute.filter(student => {
     const fieldValue = student[filterField as keyof typeof student]?.toString().toLowerCase();
@@ -37,40 +36,9 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
     return 0;
   });
 
-  // useEffect(() => {
-  //   const fetchInstitutionData = async () => {
-  //     try {
-  //       await getInstitutionData();
-  //     } catch (error) {
-  //       console.error("Error fetching institution data:", error);
-  //     }
-  //   };
-
-  //   fetchInstitutionData();
-  // }, [getInstitutionData]);
-
-  // useEffect(() => {
-  //   const fetchStudents = async () => {
-
-  //     if (institute?.id) {
-  //       try {
-  //         const students = await getStudentsByInstitute(institute.id);
-  //         setStudentsByInstitute(students);
-  //       } catch (error) {
-  //         console.error("Error fetching students:", error);
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   };
-
-  //   fetchStudents();
-  // }, [institute?.id]);
-
-
   return (
     <>
-    {studentByInstitute?
+    {studentByInstitute.length > 0?
     <>
       <div className="flex gap-4">
         {/* Filtro */}
@@ -139,7 +107,7 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
             </tr>
           </thead>
           <tbody>
-            {studentByInstitute.map(student => (
+            {sortedStudents.map(student => (
               <tr key={student.id} className="text-center hover:bg-orange-100 transition-colors">
                 <td className="px-6 py-2 border">{student.id}</td>
                 <td className="px-6 py-2 border">{student.name}</td>
