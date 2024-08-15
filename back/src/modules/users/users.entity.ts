@@ -91,7 +91,7 @@ export class User {
   @ApiProperty({
     description: 'El usuario puede ser baneado y desbaneado',
   })
-  @Column({ type: 'varchar', length: 50, default: true })
+  @Column({ type: 'varchar', length: 50, default: false })
   status: boolean;
 
   @ManyToOne(() => Institution, (institution) => institution.user_id)
