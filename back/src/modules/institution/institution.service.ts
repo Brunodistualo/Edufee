@@ -34,4 +34,8 @@ export class InstitutionService {
   toRoleAdmin(id: string): Promise<Institution> {
     return this.institutionRepository.toRoleAdmin(id);
   }
+
+  quitarRolAdmin(id: string): Promise<Institution> {
+    return this.institutionRepository.quitarRolAdmin(id);
+  }
 }

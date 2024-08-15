@@ -199,4 +199,24 @@ export class InstitutionRepository {
       );
     }
   }
+
+  async quitarRolAdmin(id: string): Promise<Institution> {
+    try {
+      const institution = await this.institutionRepository.findOneBy({ id });
+      if (!institution) {
+        throw new NotFoundException(
+          `Este ID: ${id} no corresponde a una institución.`,
+        );
+      }
+      institution.role = Role.institution;
+
+      const response = await this.institutionRepository.save(institution);
+
+      return response;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Error al intentar quitar Role de Admin`,
+      );
+    }
+  }
 }
