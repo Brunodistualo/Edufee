@@ -42,6 +42,13 @@ export class PaymentsRepository {
     return getPayment;
   }
 
+  async getPaymentOrdersInstitutions(institutionId: string) {
+    const paymentOrders = await this.institutionPaymentRepository.find({
+      where: { institution: { id: institutionId } },
+    });
+    return paymentOrders;
+  }
+
   async registerPayment(paymentDto: PaymentDto): Promise<Payment> {
     const { userId, institutionId, amount, pdfImage } = paymentDto;
 

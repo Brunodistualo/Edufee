@@ -15,6 +15,9 @@ export class InstitutionPayment {
   @Column({ nullable: true }) // Hacer que la columna pdfImage sea opcional
   pdfImage?: string;
 
-  @ManyToOne(() => Institution, (institution) => institution.payments)
+  @ManyToOne(
+    () => Institution,
+    (institution) => institution.institutionPayments,
+  )
   institution: Institution;
 }

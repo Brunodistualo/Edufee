@@ -17,7 +17,6 @@ const config = {
   // logging: true,
   // migrationsRun: true,
   synchronize: true,
-
   // dropSchema: true,
   // ssl: {
   //   rejectUnauthorized: false,
