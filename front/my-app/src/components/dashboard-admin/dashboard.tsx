@@ -137,8 +137,6 @@ const InstitutionsTable = () => {
 
       if (willConfirm) {
         const response = await admin(id);
-        console.log(response);
-
         if (response?.ok) {
           swal({
             title: "Usuario administrador",
@@ -147,6 +145,7 @@ const InstitutionsTable = () => {
             timer: 5000,
           });
         }
+        await getInsti()
       }
     } catch (error) {
       console.error(error);
@@ -170,8 +169,6 @@ const InstitutionsTable = () => {
 
       if (willConfirm) {
         const response = await insti(id);
-        console.log(response);  
-
         if (response?.ok) {
           swal({
             title: "Usuario normal",
@@ -180,6 +177,7 @@ const InstitutionsTable = () => {
             timer: 5000,
           });
         }
+        await getInsti()
       }
     } catch (error) {
       console.error(error);
