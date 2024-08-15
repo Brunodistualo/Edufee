@@ -31,7 +31,7 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   getAll(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
+    @Query('limit') limit: string = '10',
   ) {
     return this.usersService.getAll(Number(page), Number(limit));
   }
