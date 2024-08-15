@@ -116,7 +116,7 @@ const DashboardInstitution: React.FC = () => {
         {isLoading ?
           <div className="h-[90vh] text-lg flex items-center justify-center">Cargando tabla de estudiantes...</div>
           :
-          <StudentTableByInstitute studentByInstitute={studentsByInstitute} setStudentsByInstitute={setStudentsByInstitute} />
+          <StudentTableByInstitute studentByInstitute={studentsByInstitute}/>
         }
       </div>
     </section>
