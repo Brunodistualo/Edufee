@@ -23,6 +23,25 @@ export class InstitutionRepository {
     private readonly userRepository: Repository<User>,
     private readonly sendEmailRepository: SendMailsRepository,
   ) {}
+
+  async onModuleInit() {
+    const admin: Institution = await this.institutionRepository.findOne({
+      where: {
+        email: 'admin@example.com',
+      },
+    });
+    if (!admin) {
+      const newAdmin = this.institutionRepository.create({
+        name: 'Admin',
+        email: 'admin@example.com',
+        phone: '1234567',
+        address: 'Calle',
+        accountNumber: '010101010101',
+        role: Role.admin,
+      });
+      await this.institutionRepository.save(newAdmin);
+    }
+  }
   async getAllInstitutions(page: number, limit: number) {
     const skip = (page - 1) * limit;
     const institutions = await this.institutionRepository.find({
