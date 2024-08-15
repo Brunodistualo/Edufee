@@ -1,7 +1,6 @@
 'use client'
 
-import { getStudentsByInstitute } from "@/helpers/student.helper";
-import { InstitutionsData } from "@/store/institutionsData";
+
 import { useEffect, useState } from "react";
 
 export interface Student {
