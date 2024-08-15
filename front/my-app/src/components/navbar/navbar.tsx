@@ -80,8 +80,6 @@ const Navbar = () => {
             <p className='text-3xl text-[#55A058] font-bold italic'>edufee</p>
           </Link>
           <ul className='flex items-center gap-8 pr-40 text-black'>
-            <BotonLink link="/instituciones" text="Instituciones" />
-            <BotonLink link="/alumnos" text="Alumnos" />
             <BotonLink link="/contact-us" text="Contacto" />
             <div className='text-black flex items-center'>
               <div className='w-8 h-8 mr-2'>
@@ -211,8 +209,6 @@ const Navbar = () => {
             <p className='text-3xl text-[#55A058] font-bold italic'>edufee</p>
           </Link>
           <ul className='flex gap-8 pr-40 text-black'>
-            <BotonLink link="/instituciones" text="Instituciones" />
-            <BotonLink link="/alumnos" text="Alumnos" />
             <BotonLink link="/contact-us" text="Contacto" />
             <BotonLink link="/api/auth/login" text="Iniciar Sesion" />
           </ul>
