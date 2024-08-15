@@ -33,10 +33,12 @@ const CheckoutPage: React.FC<{ amount: number; reference?: string }> = ({
       return;
     }
 
+    const returnUrlBase = process.env.AUTH0_BASE_URL || "http://localhost:3000";
+
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `http://localhost:3000/payment-success?amount=${amount}&reference=${encodeURIComponent(
+        return_url: `${returnUrlBase}/payment-success?amount=${amount}&reference=${encodeURIComponent(
           reference || ""
         )}`,
       },
@@ -64,7 +66,7 @@ const CheckoutPage: React.FC<{ amount: number; reference?: string }> = ({
         disabled={!stripe || loading}
         className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
       >
-        {!loading ? `Pay $${amount}` : "Processing..."}
+        {!loading ? `Pagar $${amount}` : "Processing..."}
       </button>
     </form>
   );

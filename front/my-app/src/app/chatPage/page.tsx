@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { DataUser } from "@/store/userData";
 import { InstitutionsData } from "@/store/institutionsData";
 
-const socket = io("http://localhost:3005");
+const socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005");
 
 const ChatPage = () => {
   const userData = DataUser((state) => state.userData);

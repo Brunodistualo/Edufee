@@ -35,6 +35,8 @@ function PaymentContent() {
   const pdfUploadedRef = useRef(false);
   const uploadInProgressRef = useRef(false);
 
+  const nombreCompleto = `${userData.name} ${userData.lastname}`;
+
   let userID = "";
   try {
     if (token) {
@@ -130,26 +132,23 @@ function PaymentContent() {
         registrationInProgressRef.current = false;
         return;
       }
-
+      const apiBaseUrl = process.env.AUTH0_BASE_URL || "http://localhost:3005";
       try {
-        const response = await fetch(
-          "http://localhost:3005/payments/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              amount: parseInt(amount, 10),
-              institution: userData.institution?.name,
-              studentName: userData.name,
-              reference,
-              pdfImage, // Use the Cloudinary URL here
-              userId: userID,
-              institutionId: userData.institution?.id,
-            }),
-          }
-        );
+        const response = await fetch(`${apiBaseUrl}/payments/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: parseInt(amount, 10),
+            institution: userData.institution?.name,
+            studentName: nombreCompleto,
+            reference,
+            pdfImage, // Use the Cloudinary URL here
+            userId: userID,
+            institutionId: userData.institution?.id,
+          }),
+        });
 
         if (!response.ok) {
           throw new Error("Failed to register payment");
@@ -175,7 +174,7 @@ function PaymentContent() {
           body: JSON.stringify({
             amount,
             institution: userData.institution?.name || "miCasaSuCasa",
-            studentName: userData.name || "Yo",
+            studentName: nombreCompleto || "Yo",
             reference,
           }),
         });
@@ -197,7 +196,7 @@ function PaymentContent() {
     };
 
     generateAndUploadPDF();
-  }, [amount, reference, userData, userID, token]);
+  }, [amount, reference, userData, userID, token, nombreCompleto]);
 
   const handleDownloadPDF = async () => {
     setLoading(true);
@@ -210,7 +209,7 @@ function PaymentContent() {
         body: JSON.stringify({
           amount,
           institution: userData.institution?.name,
-          studentName: userData.name,
+          studentName: nombreCompleto,
           reference,
         }),
       });
@@ -241,7 +240,7 @@ function PaymentContent() {
     <main className="relative overflow-auto font-inter h-screen flex flex-col items-center space-y-8 text-white text-center border bg-gradient-to-tr from-blue-500 to-green-500 pb-32">
       <div className="mt-32 p-4 flex flex-col items-center">
         <h1 className="text-4xl font-extrabold mb-2">
-          Gracias, {userData.name || "Usuario"}
+          Gracias, {nombreCompleto || "Usuario"}
         </h1>
         <div className="bg-white p-2 rounded-md text-blue-600 mt-5 text-4xl font-bold">
           Pago enviado a{" "}

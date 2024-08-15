@@ -9,15 +9,15 @@ interface Message {
 const OPTIONS = [
   {
     text: "Estudiantes",
-    info: 'Con <span class ="font-bold">edufee</span> realiza tus pagos de manera segura, rapida y comoda, olvidate de las filas y realiza tus pagos sin salir de casa, para registrarte haz click <a href="/select" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">aquí!</a> ',
+    info: 'Con <span class ="font-bold">edufee</span> realiza tus pagos de manera segura, rápida y cómoda, olvídate de las filas y realiza tus pagos sin salir de casa, para registrarte haz click <a href="/select" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">aquí!</a> ',
   },
   {
     text: "Instituciones",
-    info: 'Con <span class ="font-bold">edufee</span> recibe tus pagos, alamcena tus facturas y guarda la informacion en un solo lugar, olvidate de el papeleo y facturas fisicas, inicia con tu registro <a href="/select" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">aquí!</a> ',
+    info: 'Con <span class ="font-bold">edufee</span> recibe tus pagos, almacena tus facturas y guarda la información en un solo lugar, olvídate de el papeleo y facturas físicas, inicia con tu registro <a href="/select" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">aquí!</a> ',
   },
   {
-    text: "Contactanos!",
-    info: 'Si tienes alguan duda especifica, no dudes en escribirnos, llena el formulario y deja que uno de nuestros agentes se comunique contigo. <a href="/contact-us" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">Contactanos!</a>',
+    text: "Contáctenos!",
+    info: 'Si tienes alguna duda especifica, no dudes en escribirnos, llena el formulario y deja que uno de nuestros agentes se comunique contigo. <a href="/contact-us" class=" font-bold text-blue-500 hover:font-bold hover:text-blue-600">Contáctenos!</a>',
   },
 ];
 
