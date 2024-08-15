@@ -38,7 +38,9 @@ const DashboardStudent: React.FC = () => {
       }
     }
     fetchStudentPayments();
-  }, [])
+  }, [userData?.id])
+
+  console.log(paymentsStudents)
 
   return (
     <section className="h-screen flex pt-16 items-center">
