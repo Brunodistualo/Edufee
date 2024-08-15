@@ -94,3 +94,16 @@ export const editInstitution = async (formData: instiEdit, institutionId: string
     console.log(error)
   }
 }
+
+export const getPaymentsByInstitution = async (institutionId: string) => {
+  try {
+    const response = await fetch(`${apiUrl}/payments/institution/paymentsReceived/${institutionId}`);
+    if (!response.ok) {
+      throw new Error('Error al obtener los pagos de la institución');
+    }
+    const payments = await response.json();
+    return payments;
+  } catch (error) {
+    throw error;
+  }
+}
