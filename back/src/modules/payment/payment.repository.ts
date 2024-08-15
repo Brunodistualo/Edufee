@@ -52,15 +52,22 @@ export class PaymentsRepository {
   async getPaymentsReceivedByInstitution(institutionId: string) {
     const payments = await this.paymentRepository.find({
       where: { institution: { id: institutionId } },
+      relations: ['user'],
     });
 
-    if (!payments) {
+    if (!payments || payments.length === 0) {
       throw new NotFoundException(
         `No se encontraron pagos para la institución con ID: ${institutionId}`,
       );
     }
 
-    return payments;
+    return payments.map((payment) => ({
+      id: payment.id,
+      date: payment.date,
+      amount: payment.amount,
+      pdfImage: payment.pdfImage,
+      userId: payment.user.id,
+    }));
   }
 
   async registerPayment(paymentDto: PaymentDto): Promise<Payment> {
