@@ -8,6 +8,8 @@ import {
 } from "@stripe/react-stripe-js";
 import convertToSubcurrency from "../../../lib/convertToSubcurrency";
 
+const returnUrlBase = "https://edufee.vercel.app";
+console.log(returnUrlBase);
 const CheckoutPage: React.FC<{ amount: number; reference?: string }> = ({
   amount,
   reference,
@@ -32,8 +34,6 @@ const CheckoutPage: React.FC<{ amount: number; reference?: string }> = ({
       setLoading(false);
       return;
     }
-
-    const returnUrlBase = process.env.AUTH0_BASE_URL || "http://localhost:3000";
 
     const { error } = await stripe.confirmPayment({
       elements,
