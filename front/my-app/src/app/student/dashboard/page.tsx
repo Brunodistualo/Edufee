@@ -8,6 +8,7 @@ import { History, Wallet } from "lucide-react";
 import StudentPayments from "@/components/StudentPayments";
 import { Payment } from "@/components/InstitutionPayments";
 import { getStudentsPayments } from "@/helpers/student.helper";
+import { useRouter } from "next/navigation";
 
 const DashboardStudent: React.FC = () => {
   const getData = DataUser((state) => state.getDataUser);
@@ -15,6 +16,14 @@ const DashboardStudent: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [paymentsStudents, setPaymentsStudents] = useState<Payment[]>([])
   const [view, setView] = useState<string>("generar-pago");
+  const router = useRouter()
+
+  useEffect(()=> {
+    if(typeof userData.status === 'string' && userData.status === 'true') {
+      alert("Has sido baneado temporalmente, por favor contacta al administrador")
+      router.push('/')
+    }
+},[userData])
 
   useEffect(() => {
     // Simulate a delay for data fetching
@@ -31,6 +40,7 @@ const DashboardStudent: React.FC = () => {
     fetchData();
   }, [getData]);
 
+
   useEffect(() => {
     const fetchStudentPayments = async () => {
       if (userData?.id) {
@@ -39,8 +49,6 @@ const DashboardStudent: React.FC = () => {
     }
     fetchStudentPayments();
   }, [userData?.id])
-
-  console.log(paymentsStudents)
 
   return (
     <section className="h-screen flex pt-16 items-center">
