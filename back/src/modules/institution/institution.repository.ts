@@ -23,6 +23,7 @@ export class InstitutionRepository {
     private readonly userRepository: Repository<User>,
     private readonly sendEmailRepository: SendMailsRepository,
   ) {}
+
   async getAllInstitutions(page: number, limit: number) {
     const skip = (page - 1) * limit;
     const institutions = await this.institutionRepository.find({
@@ -36,10 +37,13 @@ export class InstitutionRepository {
 
   async getNamesInstitutions() {
     const institutions = await this.institutionRepository.find({
-      select: ['name'],
+      select: ['name', 'isActive'],
+      where: { isActive: InstitutionRole.approved },
     });
-    if (!institutions)
-      throw new BadRequestException(`No hay instituciones creadas`);
+
+    if (!institutions || institutions.length === 0) {
+      throw new BadRequestException(`No hay instituciones aprobadas`);
+    }
 
     return institutions;
   }

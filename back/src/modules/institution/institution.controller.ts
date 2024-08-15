@@ -34,7 +34,7 @@ export class InstitutionController {
     @Query('limit') limit: string,
   ) {
     !page ? (page = '1') : page;
-    !limit ? (limit = '5') : limit;
+    !limit ? (limit = '10') : limit;
     if (page && limit)
       return this.institutionService.getAllInstitutions(
         Number(page),

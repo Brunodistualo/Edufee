@@ -64,7 +64,7 @@ export class SendMailsRepository {
           <h2 style="color: #FFA500;">¡Felicitaciones, <span style="color: #FFD700;">${user.name}</span>!</h2>
           <p>Tu cuenta ha sido aprobada y ya puedes comenzar a utilizar nuestros servicios.</p>
           <p>Para completar tu registro, por favor haz clic en el siguiente botón:</p>
-           <a href="https://inti-tech-pf.vercel.app/profile/activate" style="text-decoration: none;">
+           <a href="https://edufee.vercel.app/institution/dashboard" style="text-decoration: none;">
             <button style="background: linear-gradient(90deg, #FFD700, #FFA500); color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
               Ir a Edufee
             </button>

@@ -37,7 +37,7 @@ export class PaymentDetailController {
   @Get()
   getAllPayments(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
+    @Query('limit') limit: string = '10',
   ) {
     return this.paymentService.getAllPayments(Number(page), Number(limit));
   }
