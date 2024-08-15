@@ -71,6 +71,8 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
 
   return (
     <>
+    {studentByInstitute?
+    <>
       <div className="flex gap-4">
         {/* Filtro */}
         <div className="flex space-x-4 mb-4">
@@ -152,6 +154,9 @@ const StudentTableByInstitute: React.FC< { studentByInstitute: Student[]; setStu
           </tbody>
         </table>
       </div>
+    </> 
+    : 
+    <div className="h-[90vh] text-lg flex items-center justify-center">No hay ningún alumno registrado en esta institución</div>}
     </>
   );
 };
