@@ -4,15 +4,18 @@ import Sidebar, { SidebarItem } from "@/components/sidebarAdmin/page";
 import StudentTableByInstitute, { Student } from "@/components/StudentTable";
 import { getStudentsByInstitute } from "@/helpers/student.helper";
 import { InstitutionsData } from "@/store/institutionsData";
-import { User } from "lucide-react";
+import { User, History } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import ReactDOMServer from "react-dom/server";
+import InstitutionPayments, { Payment } from "@/components/InstitutionPayments";
+import { getPaymentsByInstitution } from "@/helpers/institution.helper";
 
 const DashboardInstitution: React.FC = () => {
   const [view, setView] = useState<string>("students");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [studentsByInstitute, setStudentsByInstitute] = useState<Student[]>([]);
+  const [paymentsByInstitute,setPaymentsByInstitute] = useState<Payment[]>([]);
   const getInstitutionData = InstitutionsData(
     (state) => state.getInstitutionData
   );
@@ -58,6 +61,16 @@ const DashboardInstitution: React.FC = () => {
     }
   }, [getTickets, institute?.id]);
 
+  useEffect(()=> {
+    const fetchGetPaymentsByInstitute = async ()=> {
+      if (institute?.id) {
+        setPaymentsByInstitute(await getPaymentsByInstitution(institute.id))
+      }
+    }
+    fetchGetPaymentsByInstitute()
+  },[institute?.id])
+  console.log(paymentsByInstitute)
+
   const handleModal = () => {
     const tickets = Tickets || []; // Ensure Tickets is an array
 
@@ -99,7 +112,6 @@ const DashboardInstitution: React.FC = () => {
       html: htmlContent,
     });
   };
-
   return (
     <section className="h-screen flex pt-16 items-center">
       <Sidebar background="bg-orange-100">
@@ -117,13 +129,27 @@ const DashboardInstitution: React.FC = () => {
           bgActive="bg-orange-200"
           onClick={handleModal}
         />
+        <SidebarItem
+          icon={<History />}
+          text="Historial de Pagos"
+          active={view === "historial-pagos"}
+          bgActive="bg-orange-200"
+          onClick={() => setView("historial-pagos")}
+        />
       </Sidebar>
       <div className="flex-1 h-full bg-orange-50 p-12">
-        {isLoading ?
-          <div className="h-[90vh] text-lg flex items-center justify-center">Cargando tabla de estudiantes...</div>
-          :
-          <StudentTableByInstitute studentByInstitute={studentsByInstitute}  />
-        }
+        {isLoading ? (
+          <div className="h-[90vh] text-lg flex items-center justify-center">Cargando...</div>
+        ) : (
+          <>
+            {view === "students" && (
+              <StudentTableByInstitute studentByInstitute={studentsByInstitute} />
+            )}
+            {view === "historial-pagos" && (
+              <InstitutionPayments payments={paymentsByInstitute} />
+            )}
+          </>
+        )}
       </div>
     </section>
   );
