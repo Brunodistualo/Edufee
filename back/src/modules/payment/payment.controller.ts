@@ -58,6 +58,13 @@ export class PaymentDetailController {
     return this.paymentService.getPaymentOrdersInstitutions(institutionId);
   }
 
+  @Get('institution/paymentsReceived/:institutionId')
+  async getPaymentsReceivedByInstitution(
+    @Param('institutionId', ParseUUIDPipe) institutionId: string,
+  ) {
+    return this.paymentService.getPaymentsReceivedByInstitution(institutionId);
+  }
+
   @Post('register')
   async registerPayment(@Body() paymentDto: PaymentDto) {
     return this.paymentService.registerPayment(paymentDto);

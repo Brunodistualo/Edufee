@@ -49,6 +49,28 @@ export class PaymentsRepository {
     return paymentOrders;
   }
 
+  async getPaymentsReceivedByInstitution(institutionId: string) {
+    const payments = await this.paymentRepository.find({
+      where: { institution: { id: institutionId } },
+      relations: ['user'],
+    });
+
+    if (!payments || payments.length === 0) {
+      throw new NotFoundException(
+        `No se encontraron pagos para la institución con ID: ${institutionId}`,
+      );
+    }
+
+    return payments.map((payment) => ({
+      id: payment.id,
+      date: payment.date,
+      amount: payment.amount,
+      pdfImage: payment.pdfImage,
+      userId: payment.user.id,
+      userName: payment.user.name + ' ' + payment.user.lastname,
+    }));
+  }
+
   async registerPayment(paymentDto: PaymentDto): Promise<Payment> {
     const { userId, institutionId, amount, pdfImage } = paymentDto;
 

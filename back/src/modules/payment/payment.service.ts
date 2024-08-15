@@ -26,4 +26,9 @@ export class PaymentService {
   getPaymentOrdersInstitutions(institutionId: string) {
     return this.paymentRepository.getPaymentOrdersInstitutions(institutionId);
   }
+  getPaymentsReceivedByInstitution(institutionId: string) {
+    return this.paymentRepository.getPaymentsReceivedByInstitution(
+      institutionId,
+    );
+  }
 }
