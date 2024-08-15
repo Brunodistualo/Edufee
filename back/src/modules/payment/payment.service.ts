@@ -23,4 +23,7 @@ export class PaymentService {
   getPaymentsByStudent(studentId: string, page: number, limit: number) {
     return this.paymentRepository.getPaymentsByStudent(studentId, page, limit);
   }
+  getPaymentOrdersInstitutions(institutionId: string) {
+    return this.paymentRepository.getPaymentOrdersInstitutions(institutionId);
+  }
 }

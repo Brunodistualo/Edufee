@@ -200,7 +200,7 @@ export class UsersRepository {
       user.address = '   ';
       user.phone = '   ';
       user.imgProfile = '  ';
-      user.status = false;
+      user.status = true;
 
       await this.usersRepository.save(user);
 
