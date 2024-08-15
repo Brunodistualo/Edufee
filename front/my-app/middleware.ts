@@ -23,18 +23,20 @@ export async function middleware(req: NextRequest) {
     const isInstitution = userRole.includes("institution");
 
     const isAccessingAdmin = req.nextUrl.pathname.startsWith("/dashboard-admin");
-    const isAccessingStudent = req.nextUrl.pathname.startsWith("/student/dashboard");
-    const isAccessingInstitution = req.nextUrl.pathname.startsWith("/institution/dashboard");
+    const isAccessingStudentDashboard = req.nextUrl.pathname.startsWith("/student/dashboard");
+    const isAccessingInstitutionDashboard = req.nextUrl.pathname.startsWith("/institution/dashboard");
+    const isAccessingProfile = req.nextUrl.pathname.startsWith("/profile");
+    const isAccessingPerfil = req.nextUrl.pathname.startsWith("/perfil");
 
-    if (isAdmin && (isAccessingStudent || isAccessingInstitution)) {
+    if (isAdmin && (isAccessingStudentDashboard || isAccessingInstitutionDashboard || isAccessingProfile || isAccessingPerfil)) {
       console.log("Redirigiendo a /dashboard-admin");
       return NextResponse.redirect(new URL('/dashboard-admin', req.url));
     }
-    if (isStudent && (isAccessingAdmin || isAccessingInstitution)) {
+    if (isStudent && (isAccessingAdmin || isAccessingInstitutionDashboard || isAccessingPerfil)) {
       console.log("Redirigiendo a /student/dashboard");
       return NextResponse.redirect(new URL('/student/dashboard', req.url));
     }
-    if (isInstitution && (isAccessingAdmin || isAccessingStudent)) {
+    if (isInstitution && (isAccessingAdmin || isAccessingStudentDashboard || isAccessingProfile)) {
       console.log("Redirigiendo a /institution/dashboard");
       return NextResponse.redirect(new URL('/institution/dashboard', req.url));
     }
@@ -46,7 +48,12 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-
 export const config = {
-  matcher: ['/dashboard-admin','/student/dashboard','/institution/dashboard'],
+  matcher: [
+    '/dashboard-admin', 
+    '/student/dashboard', 
+    '/institution/dashboard', 
+    '/profile',
+    '/perfil'
+  ],
 };
